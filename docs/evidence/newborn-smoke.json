@@ -1,0 +1,258 @@
+{
+  "date": "2026-11-06T03:31:20.774Z",
+  "scope": "独立存档：一次规则行动后，一次真实本地模型行动；只验证身份/经历/执行链路，不证明已学会世界规则。",
+  "settings": {
+    "world": {
+      "width": 5,
+      "height": 5,
+      "foodRegrowEveryTicks": 60,
+      "places": [
+        {
+          "x": 2,
+          "y": 2,
+          "name": "小屋",
+          "food": 0,
+          "capacity": 0
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "name": "浆果丛",
+          "food": 3,
+          "capacity": 3
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "name": "苹果树",
+          "food": 2,
+          "capacity": 2
+        },
+        {
+          "x": 1,
+          "y": 4,
+          "name": "池塘",
+          "food": 0,
+          "capacity": 0
+        }
+      ]
+    },
+    "character": {
+      "name": "小鹿",
+      "species": "deer",
+      "lifeStage": "newborn",
+      "description": "一只刚出生的小鹿，有基本生存本能，对这个世界尚不熟悉。",
+      "motivation": "首先养活自己，在探索、进食和休息的经历中学习如何应对世界的规则。",
+      "initial": {
+        "x": 2,
+        "y": 2,
+        "hunger": 20,
+        "energy": 80,
+        "curiosity": 40,
+        "food": 0
+      }
+    },
+    "initialWorld": {
+      "width": 5,
+      "height": 5,
+      "places": [
+        {
+          "x": 2,
+          "y": 2,
+          "name": "小屋",
+          "food": 0,
+          "capacity": 0
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "name": "浆果丛",
+          "food": 3,
+          "capacity": 3
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "name": "苹果树",
+          "food": 2,
+          "capacity": 2
+        },
+        {
+          "x": 1,
+          "y": 4,
+          "name": "池塘",
+          "food": 0,
+          "capacity": 0
+        }
+      ],
+      "agent": {
+        "name": "小鹿",
+        "x": 2,
+        "y": 2,
+        "hunger": 20,
+        "energy": 80,
+        "curiosity": 40,
+        "food": 0
+      }
+    },
+    "life": {
+      "hungryAt": 60,
+      "tiredAt": 30,
+      "curiousAt": 60,
+      "hungerPerTick": 2,
+      "curiosityPerTick": 3,
+      "moveEnergyCost": 3,
+      "exploreEnergyCost": 5,
+      "restEnergyGain": 15,
+      "eatHungerRelief": 35,
+      "exploreCuriosityRelief": 35,
+      "visionRadius": 1,
+      "foodRegrowEveryTicks": 60
+    },
+    "memory": {
+      "maxRecall": 6,
+      "maxExperiences": 4
+    },
+    "model": {
+      "name": "deepseek-r1:1.5b",
+      "timeoutMs": 30000,
+      "numPredict": 1024,
+      "numCtx": 4096,
+      "temperature": 0.6,
+      "topP": 0.95,
+      "seed": 42
+    },
+    "run": {
+      "liveSteps": 10,
+      "intervalMs": 1000,
+      "strict": false
+    },
+    "storage": {
+      "path": "data/deer-live.sqlite"
+    }
+  },
+  "world": {
+    "width": 5,
+    "height": 5,
+    "places": [
+      {
+        "x": 2,
+        "y": 2,
+        "name": "小屋",
+        "food": 0,
+        "capacity": 0
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "name": "浆果丛",
+        "food": 3,
+        "capacity": 3
+      },
+      {
+        "x": 4,
+        "y": 0,
+        "name": "苹果树",
+        "food": 2,
+        "capacity": 2
+      },
+      {
+        "x": 1,
+        "y": 4,
+        "name": "池塘",
+        "food": 0,
+        "capacity": 0
+      }
+    ],
+    "agent": {
+      "name": "小鹿",
+      "x": 3,
+      "y": 1,
+      "hunger": 24,
+      "energy": 74,
+      "curiosity": 46,
+      "food": 0
+    },
+    "version": 2,
+    "tick": 2,
+    "visits": {
+      "2,2": 1,
+      "3,2": 1,
+      "3,1": 1
+    }
+  },
+  "events": [
+    {
+      "tick": 1,
+      "action": {
+        "type": "move",
+        "dx": 1,
+        "dy": 0
+      },
+      "reason": "前往较少到访的地方",
+      "outcome": "移动到 (3, 2)",
+      "experience": {
+        "before": {
+          "name": "小鹿",
+          "x": 2,
+          "y": 2,
+          "hunger": 20,
+          "energy": 80,
+          "curiosity": 40,
+          "food": 0
+        },
+        "after": {
+          "name": "小鹿",
+          "x": 3,
+          "y": 2,
+          "hunger": 22,
+          "energy": 77,
+          "curiosity": 43,
+          "food": 0
+        }
+      },
+      "cognition": {
+        "source": "rule"
+      }
+    },
+    {
+      "tick": 2,
+      "action": {
+        "type": "move",
+        "dx": 0,
+        "dy": -1
+      },
+      "reason": "模型选择：移动到 (3,1)，到访 0 次",
+      "outcome": "移动到 (3, 1)",
+      "experience": {
+        "before": {
+          "name": "小鹿",
+          "x": 3,
+          "y": 2,
+          "hunger": 22,
+          "energy": 77,
+          "curiosity": 43,
+          "food": 0
+        },
+        "after": {
+          "name": "小鹿",
+          "x": 3,
+          "y": 1,
+          "hunger": 24,
+          "energy": 74,
+          "curiosity": 46,
+          "food": 0
+        }
+      },
+      "cognition": {
+        "source": "ollama",
+        "model": "deepseek-r1:1.5b",
+        "latencyMs": 10171,
+        "offeredMemoryIds": [],
+        "offeredExperienceTicks": [
+          1
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "小鹿",
+  "species": "deer",
+  "lifeStage": "newborn",
+  "description": "一只刚出生的小鹿，有基本生存本能，对这个世界尚不熟悉。",
+  "motivation": "首先养活自己，在探索、进食和休息的经历中学习如何应对世界的规则。",
+  "initial": {
+    "x": 2,
+    "y": 2,
+    "hunger": 20,
+    "energy": 80,
+    "curiosity": 40,
+    "food": 0
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "worldFile": "config/world.json",
+  "characterFile": "config/deer.json",
+  "life": {
+    "hungryAt": 60,
+    "tiredAt": 30,
+    "curiousAt": 60,
+    "hungerPerTick": 2,
+    "curiosityPerTick": 3,
+    "moveEnergyCost": 3,
+    "exploreEnergyCost": 5,
+    "restEnergyGain": 15,
+    "eatHungerRelief": 35,
+    "exploreCuriosityRelief": 35,
+    "visionRadius": 1
+  },
+  "memory": {
+    "maxRecall": 6,
+    "maxExperiences": 4
+  },
+  "model": {
+    "name": "deepseek-r1:1.5b",
+    "timeoutMs": 30000,
+    "numPredict": 1024,
+    "numCtx": 4096,
+    "temperature": 0.6,
+    "topP": 0.95,
+    "seed": 42
+  },
+  "run": {
+    "liveSteps": 10,
+    "intervalMs": 1000,
+    "strict": false
+  },
+  "storage": {
+    "path": "data/deer-live.sqlite"
+  }
+}

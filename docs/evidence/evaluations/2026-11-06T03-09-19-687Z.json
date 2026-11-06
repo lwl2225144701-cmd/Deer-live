@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-06T03:09:19.687Z",
+  "model": "deepseek-r1:1.5b",
+  "scope": "单个受控场景、每种条件一次；无规则接管；不代表长期能力或统计显著性。程序根据记忆位置提供第一步方向提示，模型只选择动作，不生成解释或记忆引用。",
+  "verdict": "not-demonstrated",
+  "memoryEffectObserved": false,
+  "world": {
+    "version": 2,
+    "tick": 6,
+    "width": 5,
+    "height": 5,
+    "agent": {
+      "name": "小鹿",
+      "x": 2,
+      "y": 2,
+      "hunger": 71,
+      "energy": 63,
+      "curiosity": 23,
+      "food": 0
+    },
+    "places": [
+      {
+        "x": 2,
+        "y": 2,
+        "name": "小屋",
+        "food": 0,
+        "capacity": 0
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "name": "浆果丛",
+        "food": 2,
+        "capacity": 3
+      },
+      {
+        "x": 4,
+        "y": 0,
+        "name": "苹果树",
+        "food": 2,
+        "capacity": 2
+      },
+      {
+        "x": 1,
+        "y": 4,
+        "name": "池塘",
+        "food": 0,
+        "capacity": 0
+      }
+    ],
+    "visits": {
+      "2,2": 2,
+      "1,2": 2,
+      "0,2": 1
+    }
+  },
+  "memories": [
+    {
+      "id": "event:3",
+      "tick": 3,
+      "x": 0,
+      "y": 2,
+      "place": "浆果丛",
+      "foodRemaining": 2,
+      "text": "在浆果丛找到一份食物，还剩 2 份"
+    }
+  ],
+  "results": [
+    {
+      "condition": "without-memory",
+      "decision": {
+        "action": {
+          "type": "move",
+          "dx": 1,
+          "dy": 0
+        },
+        "choice": "east",
+        "reason": "模型选择：移动到 (3,2)，到访 0 次",
+        "model": "deepseek-r1:1.5b",
+        "latencyMs": 14896
+      },
+      "movedTowardKnownFood": false
+    },
+    {
+      "condition": "with-memory",
+      "decision": {
+        "action": {
+          "type": "move",
+          "dx": 1,
+          "dy": 0
+        },
+        "choice": "east",
+        "reason": "模型选择：移动到 (3,2)，到访 0 次",
+        "model": "deepseek-r1:1.5b",
+        "latencyMs": 7552
+      },
+      "movedTowardKnownFood": false
+    }
+  ],
+  "inputs": {
+    "withoutMemory": {
+      "messages": [
+        {
+          "role": "user",
+          "content": "{\"task\":\"你是小鹿。根据观察和记忆，只选择下一步动作。hunger越高越饿，energy越低越累，food是随身食物数量。饿了先吃，没有食物就去找；精力不足则休息；状态好时探索少去的地方。explore只检查脚下，不能隔空采集或移动。脚下没食物且已经探索过时，优先移动。记忆是过去观察，可能过期；nextAction是前往该记忆位置的第一步。只输出JSON，例如{\\\"choice\\\":\\\"rest\\\"}，不要解释。\",\"observation\":{\"tick\":6,\"self\":{\"name\":\"小鹿\",\"x\":2,\"y\":2,\"hunger\":71,\"energy\":63,\"curiosity\":23,\"food\":0},\"nearby\":[{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":2,\"y\":1,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0,\"visits\":2},{\"x\":2,\"y\":2,\"name\":\"小屋\",\"food\":0,\"visits\":2},{\"x\":3,\"y\":2,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":2,\"y\":3,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":3,\"y\":3,\"name\":\"草地\",\"food\":0,\"visits\":0}],\"choices\":[{\"id\":\"explore\",\"label\":\"仔细探索脚下的位置，有食物时采集一份\"},{\"id\":\"rest\",\"label\":\"休息恢复精力\"},{\"id\":\"east\",\"label\":\"移动到 (3,2)，到访 0 次\"},{\"id\":\"south\",\"label\":\"移动到 (2,3)，到访 0 次\"},{\"id\":\"west\",\"label\":\"移动到 (1,2)，到访 2 次\"},{\"id\":\"north\",\"label\":\"移动到 (2,1)，到访 0 次\"}]},\"memories\":[],\"responseSchema\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"choice\":{\"type\":\"string\",\"enum\":[\"explore\",\"rest\",\"east\",\"south\",\"west\",\"north\"]}},\"required\":[\"choice\"]}}"
+        }
+      ],
+      "format": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "choice": {
+            "type": "string",
+            "enum": [
+              "explore",
+              "rest",
+              "east",
+              "south",
+              "west",
+              "north"
+            ]
+          }
+        },
+        "required": [
+          "choice"
+        ]
+      }
+    },
+    "withMemory": {
+      "messages": [
+        {
+          "role": "user",
+          "content": "{\"task\":\"你是小鹿。根据观察和记忆，只选择下一步动作。hunger越高越饿，energy越低越累，food是随身食物数量。饿了先吃，没有食物就去找；精力不足则休息；状态好时探索少去的地方。explore只检查脚下，不能隔空采集或移动。脚下没食物且已经探索过时，优先移动。记忆是过去观察，可能过期；nextAction是前往该记忆位置的第一步。只输出JSON，例如{\\\"choice\\\":\\\"rest\\\"}，不要解释。\",\"observation\":{\"tick\":6,\"self\":{\"name\":\"小鹿\",\"x\":2,\"y\":2,\"hunger\":71,\"energy\":63,\"curiosity\":23,\"food\":0},\"nearby\":[{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":2,\"y\":1,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0,\"visits\":2},{\"x\":2,\"y\":2,\"name\":\"小屋\",\"food\":0,\"visits\":2},{\"x\":3,\"y\":2,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":2,\"y\":3,\"name\":\"草地\",\"food\":0,\"visits\":0},{\"x\":3,\"y\":3,\"name\":\"草地\",\"food\":0,\"visits\":0}],\"choices\":[{\"id\":\"explore\",\"label\":\"仔细探索脚下的位置，有食物时采集一份\"},{\"id\":\"rest\",\"label\":\"休息恢复精力\"},{\"id\":\"east\",\"label\":\"移动到 (3,2)，到访 0 次\"},{\"id\":\"south\",\"label\":\"移动到 (2,3)，到访 0 次\"},{\"id\":\"west\",\"label\":\"移动到 (1,2)，到访 2 次\"},{\"id\":\"north\",\"label\":\"移动到 (2,1)，到访 0 次\"}]},\"memories\":[{\"id\":\"event:3\",\"tick\":3,\"x\":0,\"y\":2,\"place\":\"浆果丛\",\"foodRemaining\":2,\"text\":\"在浆果丛找到一份食物，还剩 2 份\",\"nextAction\":\"west\"}],\"responseSchema\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"choice\":{\"type\":\"string\",\"enum\":[\"explore\",\"rest\",\"east\",\"south\",\"west\",\"north\"]}},\"required\":[\"choice\"]}}"
+        }
+      ],
+      "format": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "choice": {
+            "type": "string",
+            "enum": [
+              "explore",
+              "rest",
+              "east",
+              "south",
+              "west",
+              "north"
+            ]
+          }
+        },
+        "required": [
+          "choice"
+        ]
+      }
+    }
+  }
+}

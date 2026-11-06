@@ -1,0 +1,801 @@
+{
+  "date": "2026-11-06T03:39:30.619Z",
+  "model": {
+    "name": "deepseek-r1:1.5b",
+    "timeoutMs": 30000,
+    "numPredict": 1024,
+    "numCtx": 4096,
+    "temperature": 0.6,
+    "topP": 0.95,
+    "seed": 42
+  },
+  "scope": "按当前配置重建第3步输入，已核对前两步身体变化和观察；不是当时HTTP请求的抓包。三种输入、两个种子、小样本，仅用于定位；不修改世界、不训练模型、不禁止任何合法动作。紧凑输入同时改变了指令与信息组织，不能单独归因。",
+  "sourcePath": "data/newborn.sqlite",
+  "sourceHash": "07aa1705dde779641c56f93d2dadb03131724987927657bfcddc121c5e1a13b6",
+  "world": {
+    "width": 5,
+    "height": 5,
+    "places": [
+      {
+        "x": 2,
+        "y": 2,
+        "name": "小屋",
+        "food": 0,
+        "capacity": 0
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "name": "浆果丛",
+        "food": 3,
+        "capacity": 3
+      },
+      {
+        "x": 4,
+        "y": 0,
+        "name": "苹果树",
+        "food": 2,
+        "capacity": 2
+      },
+      {
+        "x": 1,
+        "y": 4,
+        "name": "池塘",
+        "food": 0,
+        "capacity": 0
+      }
+    ],
+    "agent": {
+      "name": "小鹿",
+      "x": 2,
+      "y": 1,
+      "hunger": 24,
+      "energy": 72,
+      "curiosity": 11,
+      "food": 0
+    },
+    "version": 2,
+    "tick": 2,
+    "visits": {
+      "2,2": 1,
+      "2,1": 1
+    }
+  },
+  "memories": [
+    {
+      "id": "event:2",
+      "tick": 2,
+      "x": 2,
+      "y": 1,
+      "place": "草地",
+      "foodRemaining": 0,
+      "text": "探索草地，没有找到食物"
+    }
+  ],
+  "experiences": [
+    {
+      "tick": 1,
+      "action": {
+        "type": "move",
+        "dx": 0,
+        "dy": -1
+      },
+      "outcome": "移动到 (2, 1)",
+      "before": {
+        "name": "小鹿",
+        "x": 2,
+        "y": 2,
+        "hunger": 20,
+        "energy": 80,
+        "curiosity": 40,
+        "food": 0
+      },
+      "after": {
+        "name": "小鹿",
+        "x": 2,
+        "y": 1,
+        "hunger": 22,
+        "energy": 77,
+        "curiosity": 43,
+        "food": 0
+      }
+    },
+    {
+      "tick": 2,
+      "action": {
+        "type": "explore"
+      },
+      "outcome": "探索草地，没有找到食物",
+      "before": {
+        "name": "小鹿",
+        "x": 2,
+        "y": 1,
+        "hunger": 22,
+        "energy": 77,
+        "curiosity": 43,
+        "food": 0
+      },
+      "after": {
+        "name": "小鹿",
+        "x": 2,
+        "y": 1,
+        "hunger": 24,
+        "energy": 72,
+        "curiosity": 11,
+        "food": 0
+      }
+    }
+  ],
+  "conditions": [
+    {
+      "name": "baseline",
+      "payload": {
+        "identity": {
+          "name": "小鹿",
+          "species": "deer",
+          "lifeStage": "newborn",
+          "description": "一只刚出生的小鹿，有基本生存本能，对这个世界尚不熟悉。",
+          "motivation": "首先养活自己，在探索、进食和休息的经历中学习如何应对世界的规则。"
+        },
+        "task": "根据眼前观察、地点记忆和行动经历选择下一步。hunger越高越饿，energy越低越累，food是随身食物数量。以自身生存为首要目标：有基本的寻找食物和休息本能，依据身体阈值照顾需求。通过experiences里的实际身体变化和探索结果积累经验，调整下一步；不要虚构没有发生过的经历。状态良好时尝试少去的地方。explore只检查脚下，不移动；脚下没食物且已探索过时，尝试其他地方。记忆可能过期；nextAction是前往该记忆位置的第一步。只输出动作JSON，例如{\"choice\":\"rest\"}，不要解释。",
+        "observation": {
+          "tick": 2,
+          "self": {
+            "name": "小鹿",
+            "x": 2,
+            "y": 1,
+            "hunger": 24,
+            "energy": 72,
+            "curiosity": 11,
+            "food": 0
+          },
+          "thresholds": {
+            "hungryAt": 60,
+            "tiredAt": 30,
+            "curiousAt": 60
+          },
+          "nearby": [
+            {
+              "x": 1,
+              "y": 0,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 2,
+              "y": 0,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 3,
+              "y": 0,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 2,
+              "y": 1,
+              "name": "草地",
+              "food": 0,
+              "visits": 1
+            },
+            {
+              "x": 3,
+              "y": 1,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 1,
+              "y": 2,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 2,
+              "y": 2,
+              "name": "小屋",
+              "food": 0,
+              "visits": 1
+            },
+            {
+              "x": 3,
+              "y": 2,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            }
+          ],
+          "choices": [
+            {
+              "id": "explore",
+              "label": "仔细探索脚下的位置，有食物时采集一份"
+            },
+            {
+              "id": "rest",
+              "label": "休息恢复精力 +15"
+            },
+            {
+              "id": "east",
+              "label": "移动到 (3,1)，到访 0 次"
+            },
+            {
+              "id": "south",
+              "label": "移动到 (2,2)，到访 1 次"
+            },
+            {
+              "id": "west",
+              "label": "移动到 (1,1)，到访 0 次"
+            },
+            {
+              "id": "north",
+              "label": "移动到 (2,0)，到访 0 次"
+            }
+          ]
+        },
+        "memories": [
+          {
+            "id": "event:2",
+            "tick": 2,
+            "x": 2,
+            "y": 1,
+            "place": "草地",
+            "foodRemaining": 0,
+            "text": "探索草地，没有找到食物",
+            "nextAction": "explore"
+          }
+        ],
+        "experiences": [
+          {
+            "tick": 1,
+            "action": {
+              "type": "move",
+              "dx": 0,
+              "dy": -1
+            },
+            "outcome": "移动到 (2, 1)",
+            "from": {
+              "x": 2,
+              "y": 2
+            },
+            "to": {
+              "x": 2,
+              "y": 1
+            },
+            "bodyChange": {
+              "hunger": 2,
+              "energy": -3,
+              "curiosity": 3,
+              "food": 0
+            }
+          },
+          {
+            "tick": 2,
+            "action": {
+              "type": "explore"
+            },
+            "outcome": "探索草地，没有找到食物",
+            "from": {
+              "x": 2,
+              "y": 1
+            },
+            "to": {
+              "x": 2,
+              "y": 1
+            },
+            "bodyChange": {
+              "hunger": 2,
+              "energy": -5,
+              "curiosity": -32,
+              "food": 0
+            }
+          }
+        ],
+        "responseSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "choice": {
+              "type": "string",
+              "enum": [
+                "explore",
+                "rest",
+                "east",
+                "south",
+                "west",
+                "north"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ]
+        }
+      }
+    },
+    {
+      "name": "remove-empty-location-hint",
+      "payload": {
+        "identity": {
+          "name": "小鹿",
+          "species": "deer",
+          "lifeStage": "newborn",
+          "description": "一只刚出生的小鹿，有基本生存本能，对这个世界尚不熟悉。",
+          "motivation": "首先养活自己，在探索、进食和休息的经历中学习如何应对世界的规则。"
+        },
+        "task": "根据眼前观察、地点记忆和行动经历选择下一步。hunger越高越饿，energy越低越累，food是随身食物数量。以自身生存为首要目标：有基本的寻找食物和休息本能，依据身体阈值照顾需求。通过experiences里的实际身体变化和探索结果积累经验，调整下一步；不要虚构没有发生过的经历。状态良好时尝试少去的地方。explore只检查脚下，不移动；脚下没食物且已探索过时，尝试其他地方。记忆可能过期；nextAction是前往该记忆位置的第一步。只输出动作JSON，例如{\"choice\":\"rest\"}，不要解释。",
+        "observation": {
+          "tick": 2,
+          "self": {
+            "name": "小鹿",
+            "x": 2,
+            "y": 1,
+            "hunger": 24,
+            "energy": 72,
+            "curiosity": 11,
+            "food": 0
+          },
+          "thresholds": {
+            "hungryAt": 60,
+            "tiredAt": 30,
+            "curiousAt": 60
+          },
+          "nearby": [
+            {
+              "x": 1,
+              "y": 0,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 2,
+              "y": 0,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 3,
+              "y": 0,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 2,
+              "y": 1,
+              "name": "草地",
+              "food": 0,
+              "visits": 1
+            },
+            {
+              "x": 3,
+              "y": 1,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 1,
+              "y": 2,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            },
+            {
+              "x": 2,
+              "y": 2,
+              "name": "小屋",
+              "food": 0,
+              "visits": 1
+            },
+            {
+              "x": 3,
+              "y": 2,
+              "name": "草地",
+              "food": 0,
+              "visits": 0
+            }
+          ],
+          "choices": [
+            {
+              "id": "explore",
+              "label": "仔细探索脚下的位置，有食物时采集一份"
+            },
+            {
+              "id": "rest",
+              "label": "休息恢复精力 +15"
+            },
+            {
+              "id": "east",
+              "label": "移动到 (3,1)，到访 0 次"
+            },
+            {
+              "id": "south",
+              "label": "移动到 (2,2)，到访 1 次"
+            },
+            {
+              "id": "west",
+              "label": "移动到 (1,1)，到访 0 次"
+            },
+            {
+              "id": "north",
+              "label": "移动到 (2,0)，到访 0 次"
+            }
+          ]
+        },
+        "memories": [
+          {
+            "id": "event:2",
+            "tick": 2,
+            "x": 2,
+            "y": 1,
+            "place": "草地",
+            "foodRemaining": 0,
+            "text": "探索草地，没有找到食物"
+          }
+        ],
+        "experiences": [
+          {
+            "tick": 1,
+            "action": {
+              "type": "move",
+              "dx": 0,
+              "dy": -1
+            },
+            "outcome": "移动到 (2, 1)",
+            "from": {
+              "x": 2,
+              "y": 2
+            },
+            "to": {
+              "x": 2,
+              "y": 1
+            },
+            "bodyChange": {
+              "hunger": 2,
+              "energy": -3,
+              "curiosity": 3,
+              "food": 0
+            }
+          },
+          {
+            "tick": 2,
+            "action": {
+              "type": "explore"
+            },
+            "outcome": "探索草地，没有找到食物",
+            "from": {
+              "x": 2,
+              "y": 1
+            },
+            "to": {
+              "x": 2,
+              "y": 1
+            },
+            "bodyChange": {
+              "hunger": 2,
+              "energy": -5,
+              "curiosity": -32,
+              "food": 0
+            }
+          }
+        ],
+        "responseSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "choice": {
+              "type": "string",
+              "enum": [
+                "explore",
+                "rest",
+                "east",
+                "south",
+                "west",
+                "north"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ]
+        }
+      }
+    },
+    {
+      "name": "compact-facts",
+      "payload": {
+        "identity": {
+          "name": "小鹿",
+          "species": "deer",
+          "lifeStage": "newborn",
+          "description": "一只刚出生的小鹿，有基本生存本能，对这个世界尚不熟悉。",
+          "motivation": "首先养活自己，在探索、进食和休息的经历中学习如何应对世界的规则。"
+        },
+        "task": "根据以下事实选择下一步动作。仅输出符合给定schema的JSON，不要解释。",
+        "current": {
+          "x": 2,
+          "y": 1,
+          "hunger": 24,
+          "energy": 72,
+          "curiosity": 11,
+          "food": 0
+        },
+        "bodyLegend": {
+          "hunger": "越高越饿",
+          "energy": "越低越累",
+          "curiosity": "越高越想探索"
+        },
+        "thresholds": {
+          "hungryAt": 60,
+          "tiredAt": 30,
+          "curiousAt": 60
+        },
+        "nearby": [
+          {
+            "x": 1,
+            "y": 0,
+            "name": "草地",
+            "food": 0,
+            "visits": 0
+          },
+          {
+            "x": 2,
+            "y": 0,
+            "name": "草地",
+            "food": 0,
+            "visits": 0
+          },
+          {
+            "x": 3,
+            "y": 0,
+            "name": "草地",
+            "food": 0,
+            "visits": 0
+          },
+          {
+            "x": 1,
+            "y": 1,
+            "name": "草地",
+            "food": 0,
+            "visits": 0
+          },
+          {
+            "x": 2,
+            "y": 1,
+            "name": "草地",
+            "food": 0,
+            "visits": 1
+          },
+          {
+            "x": 3,
+            "y": 1,
+            "name": "草地",
+            "food": 0,
+            "visits": 0
+          },
+          {
+            "x": 1,
+            "y": 2,
+            "name": "草地",
+            "food": 0,
+            "visits": 0
+          },
+          {
+            "x": 2,
+            "y": 2,
+            "name": "小屋",
+            "food": 0,
+            "visits": 1
+          },
+          {
+            "x": 3,
+            "y": 2,
+            "name": "草地",
+            "food": 0,
+            "visits": 0
+          }
+        ],
+        "lastExperience": {
+          "action": {
+            "type": "explore"
+          },
+          "location": {
+            "x": 2,
+            "y": 1
+          },
+          "outcome": "探索草地，没有找到食物",
+          "bodyChange": {
+            "hunger": 2,
+            "energy": -5,
+            "curiosity": -32,
+            "food": 0
+          }
+        },
+        "memories": [
+          {
+            "id": "event:2",
+            "tick": 2,
+            "x": 2,
+            "y": 1,
+            "place": "草地",
+            "foodRemaining": 0,
+            "text": "探索草地，没有找到食物"
+          }
+        ],
+        "choices": [
+          {
+            "id": "explore",
+            "label": "仔细探索脚下的位置，有食物时采集一份"
+          },
+          {
+            "id": "rest",
+            "label": "休息恢复精力 +15"
+          },
+          {
+            "id": "east",
+            "label": "移动到 (3,1)，到访 0 次"
+          },
+          {
+            "id": "south",
+            "label": "移动到 (2,2)，到访 1 次"
+          },
+          {
+            "id": "west",
+            "label": "移动到 (1,1)，到访 0 次"
+          },
+          {
+            "id": "north",
+            "label": "移动到 (2,0)，到访 0 次"
+          }
+        ],
+        "responseSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "choice": {
+              "type": "string",
+              "enum": [
+                "explore",
+                "rest",
+                "east",
+                "south",
+                "west",
+                "north"
+              ]
+            }
+          },
+          "required": [
+            "choice"
+          ]
+        }
+      }
+    }
+  ],
+  "results": [
+    {
+      "condition": "baseline",
+      "seed": 42,
+      "valid": true,
+      "choice": "explore",
+      "repeatedEmptyExplore": true,
+      "finalOutput": "{\"choice\":\"explore\"}",
+      "finishReason": "stop",
+      "promptTokens": 808,
+      "generatedTokens": 339,
+      "latencyMs": 10500
+    },
+    {
+      "condition": "remove-empty-location-hint",
+      "seed": 42,
+      "valid": true,
+      "choice": "east",
+      "repeatedEmptyExplore": false,
+      "finalOutput": "{\"choice\":\"east\"}",
+      "finishReason": "stop",
+      "promptTokens": 802,
+      "generatedTokens": 712,
+      "latencyMs": 16597
+    },
+    {
+      "condition": "compact-facts",
+      "seed": 42,
+      "valid": true,
+      "choice": "explore",
+      "repeatedEmptyExplore": true,
+      "finalOutput": "{\n  \"choice\": \"explore\"\n}",
+      "finishReason": "stop",
+      "promptTokens": 612,
+      "generatedTokens": 481,
+      "latencyMs": 12486
+    },
+    {
+      "condition": "baseline",
+      "seed": 43,
+      "valid": true,
+      "choice": "east",
+      "repeatedEmptyExplore": false,
+      "finalOutput": "{\"choice\":\"east\"}",
+      "finishReason": "stop",
+      "promptTokens": 808,
+      "generatedTokens": 458,
+      "latencyMs": 11066
+    },
+    {
+      "condition": "remove-empty-location-hint",
+      "seed": 43,
+      "valid": true,
+      "choice": "south",
+      "repeatedEmptyExplore": false,
+      "finalOutput": "{\"choice\":\"south\"}",
+      "finishReason": "stop",
+      "promptTokens": 802,
+      "generatedTokens": 481,
+      "latencyMs": 11384
+    },
+    {
+      "condition": "compact-facts",
+      "seed": 43,
+      "valid": true,
+      "choice": "south",
+      "repeatedEmptyExplore": false,
+      "finalOutput": "{\n  \"choice\": \"south\"\n}",
+      "finishReason": "stop",
+      "promptTokens": 612,
+      "generatedTokens": 785,
+      "latencyMs": 19542
+    }
+  ],
+  "sourceUnchanged": true,
+  "summary": [
+    {
+      "condition": "baseline",
+      "valid": 2,
+      "repeatedEmptyExplore": 1,
+      "choices": [
+        "explore",
+        "east"
+      ]
+    },
+    {
+      "condition": "remove-empty-location-hint",
+      "valid": 2,
+      "repeatedEmptyExplore": 0,
+      "choices": [
+        "east",
+        "south"
+      ]
+    },
+    {
+      "condition": "compact-facts",
+      "valid": 2,
+      "repeatedEmptyExplore": 1,
+      "choices": [
+        "explore",
+        "south"
+      ]
+    }
+  ]
+}

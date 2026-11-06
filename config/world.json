@@ -1,0 +1,35 @@
+{
+  "width": 5,
+  "height": 5,
+  "foodRegrowEveryTicks": 60,
+  "places": [
+    {
+      "x": 2,
+      "y": 2,
+      "name": "小屋",
+      "food": 0,
+      "capacity": 0
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "name": "浆果丛",
+      "food": 3,
+      "capacity": 3
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "name": "苹果树",
+      "food": 2,
+      "capacity": 2
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "name": "池塘",
+      "food": 0,
+      "capacity": 0
+    }
+  ]
+}
