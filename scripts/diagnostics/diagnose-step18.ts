@@ -3,10 +3,10 @@ import { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { Store } from '../src/store.ts';
-import { initialWorld, advance, type Event } from '../src/world.ts';
-import { decisionRequest } from '../src/brain.ts';
-import { loadSettings } from '../src/settings.ts';
+import { Store } from '../../src/storage/store.ts';
+import { initialWorld, advance, type Event } from '../../src/world/world.ts';
+import { decisionRequest } from '../../src/agent/brain.ts';
+import { loadSettings } from '../../src/config/settings.ts';
 
 // Historical reconstruction only. All calls observe the same pre-step-18
 // state; no action is executed and the original database is read-only.

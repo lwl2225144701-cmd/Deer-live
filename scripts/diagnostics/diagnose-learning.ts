@@ -3,10 +3,10 @@ import { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { Store } from '../src/store.ts';
-import { initialWorld, advance, choices, type Event } from '../src/world.ts';
-import { decisionRequest } from '../src/brain.ts';
-import { loadSettings } from '../src/settings.ts';
+import { Store } from '../../src/storage/store.ts';
+import { initialWorld, advance, choices, type Event } from '../../src/world/world.ts';
+import { decisionRequest } from '../../src/agent/brain.ts';
+import { loadSettings } from '../../src/config/settings.ts';
 
 // Diagnosis only: reconstruct a past decision in memory. Never advance or write
 // the user's world. No model thinking text is retained in the report.

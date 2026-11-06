@@ -1,10 +1,9 @@
 import { DatabaseSync } from 'node:sqlite';
-import { initialWorld, restoreWorld, validateWorld, type Event, type World } from './world.ts';
-import { DEFAULT_SETTINGS } from './settings.ts';
-import { explorationFacts, type LearningContext } from './learning.ts';
+import { initialWorld, restoreWorld, validateWorld, type Event, type World } from '../world/world.ts';
+import { DEFAULT_SETTINGS } from '../config/settings.ts';
+import { explorationFacts, type LearningContext } from '../agent/learning.ts';
 
-export type Memory = { id: string; tick: number; x: number; y: number; place: string; foodRemaining: number; text: string };
-export type Experience = { tick: number; action: Event['action']; outcome: string; before: World['agent']; after: World['agent'] };
+import type { Memory, Experience } from '../agent/memory.ts';
 
 export class Store {
   private db: DatabaseSync;

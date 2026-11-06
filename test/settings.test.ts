@@ -5,11 +5,11 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { loadSettings, DEFAULT_SETTINGS } from '../src/settings.ts';
-import { initialWorld, advance, decide, perceive } from '../src/world.ts';
-import { Store } from '../src/store.ts';
-import { OllamaBrain, decisionRequest } from '../src/brain.ts';
-import { tick } from '../src/runtime.ts';
+import { loadSettings, DEFAULT_SETTINGS } from '../src/config/settings.ts';
+import { initialWorld, advance, decide, perceive } from '../src/world/world.ts';
+import { Store } from '../src/storage/store.ts';
+import { OllamaBrain, decisionRequest } from '../src/agent/brain.ts';
+import { tick } from '../src/app/runtime.ts';
 
 const write = (path: string, data: unknown) => writeFileSync(path, JSON.stringify(data));
 function fixture() {
@@ -59,7 +59,7 @@ test('错误设定被拒绝；环境变量优先且不会改变内置默认值',
 
 test('查看设定不创建存档；新配置不重置已有角色，运行规则可更新', () => {
   const f = fixture();
-  const cli = fileURLToPath(new URL('../src/cli.ts', import.meta.url));
+  const cli = fileURLToPath(new URL('../src/app/cli.ts', import.meta.url));
   const cleanEnv = Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('DEER_LIVE_')));
   const run = (command: string) => execFileSync(process.execPath, [cli, command], { cwd: f.dir, env: { ...cleanEnv, DEER_LIVE_CONFIG: 'runtime.json', NODE_NO_WARNINGS: '1' }, encoding: 'utf8' });
   try {

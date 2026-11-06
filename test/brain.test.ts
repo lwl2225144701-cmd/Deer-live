@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { OllamaBrain, decisionRequest, compactDecisionRequest } from '../src/brain.ts';
-import { initialWorld } from '../src/world.ts';
-import { Store } from '../src/store.ts';
-import { tick } from '../src/runtime.ts';
+import { OllamaBrain, decisionRequest, compactDecisionRequest } from '../src/agent/brain.ts';
+import { initialWorld } from '../src/world/world.ts';
+import { Store } from '../src/storage/store.ts';
+import { tick } from '../src/app/runtime.ts';
 
 const response = (content: unknown, extra = {}) => (async () => new Response(JSON.stringify({ done: true, done_reason: 'stop', message: { content: JSON.stringify(content) }, ...extra }))) as typeof fetch;
 

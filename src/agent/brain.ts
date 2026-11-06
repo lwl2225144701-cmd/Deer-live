@@ -1,7 +1,7 @@
-import { choices, perceive, type Action, type World } from './world.ts';
-import type { Memory, Experience } from './store.ts';
+import { choices, perceive, type Action, type World } from '../world/world.ts';
+import type { Memory, Experience } from './memory.ts';
 import { goalCandidates, type LearningContext } from './learning.ts';
-import { DEFAULT_SETTINGS, type LifeSettings, type CharacterSettings, type ModelSettings } from './settings.ts';
+import { DEFAULT_SETTINGS, type LifeSettings, type CharacterSettings, type ModelSettings } from '../config/settings.ts';
 
 export type Decision = { action: Action; reason: string; model: string; latencyMs: number; choice: string; goal?: { x: number; y: number } | null };
 export type Brain = { readonly model?: string; decide(world: World, memories: Memory[], signal?: AbortSignal, experiences?: Experience[], learning?: LearningContext): Promise<Decision> };

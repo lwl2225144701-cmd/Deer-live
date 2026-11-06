@@ -1,10 +1,10 @@
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
-import { initialWorld, advance, type World } from '../src/world.ts';
-import { Store } from '../src/store.ts';
-import { OllamaBrain, compactDecisionRequest } from '../src/brain.ts';
-import { loadSettings } from '../src/settings.ts';
+import { initialWorld, advance, type World } from '../../src/world/world.ts';
+import { Store } from '../../src/storage/store.ts';
+import { OllamaBrain, compactDecisionRequest } from '../../src/agent/brain.ts';
+import { loadSettings } from '../../src/config/settings.ts';
 
 const baseline = JSON.parse(readFileSync(resolve(process.argv[2] || 'docs/evidence/diagnostics/step18-2026-11-06T07-20-36-596Z/report.json'), 'utf8'));
 const { settings } = loadSettings();

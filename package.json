@@ -3,11 +3,16 @@
   "version": "0.4.1",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.18.0" },
+  "engines": {
+    "node": ">=22.18.0"
+  },
   "scripts": {
-    "start": "node src/cli.ts",
+    "start": "node src/app/cli.ts",
     "test": "node --test test/*.test.ts",
-    "evaluate:local": "node scripts/evaluate-local.ts",
-    "evaluate:learning": "node scripts/evaluate-learning.ts"
+    "evaluate:local": "node scripts/evaluation/evaluate-local.ts",
+    "evaluate:learning": "node scripts/evaluation/evaluate-learning.ts",
+    "diagnose:learning": "node scripts/diagnostics/diagnose-learning.ts",
+    "diagnose:step18": "node scripts/diagnostics/diagnose-step18.ts",
+    "verify:compact": "node scripts/diagnostics/verify-compact.ts"
   }
 }

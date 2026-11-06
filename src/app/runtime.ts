@@ -1,8 +1,8 @@
-import { advance, decide, type Cognition } from './world.ts';
-import { Store } from './store.ts';
-import type { Brain } from './brain.ts';
-import { updateGoal, goalCandidates } from './learning.ts';
-import { DEFAULT_SETTINGS, type Settings } from './settings.ts';
+import { advance, decide, type Cognition } from '../world/world.ts';
+import { Store } from '../storage/store.ts';
+import type { Brain } from '../agent/brain.ts';
+import { updateGoal, goalCandidates } from '../agent/learning.ts';
+import { DEFAULT_SETTINGS, type Settings } from '../config/settings.ts';
 
 export async function tick(store: Store, options: { brain?: Brain; strict?: boolean; signal?: AbortSignal; settings?: Settings } = {}) {
   const world = store.load();

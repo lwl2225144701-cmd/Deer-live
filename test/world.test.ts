@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { advance, initialWorld, step } from '../src/world.ts';
+import { advance, initialWorld, step } from '../src/world/world.ts';
 
 test('自动行为持续推进，需求与位置保持在合法范围', () => {
   let world = initialWorld();

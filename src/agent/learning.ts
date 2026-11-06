@@ -1,5 +1,5 @@
-import { perceive, type Event, type World } from './world.ts';
-import { DEFAULT_SETTINGS, type LifeSettings } from './settings.ts';
+import { perceive, type Event, type World } from '../world/world.ts';
+import { DEFAULT_SETTINGS, type LifeSettings } from '../config/settings.ts';
 
 export type ExplorationFact = {
   x: number; y: number; attempts: number; emptyAttempts: number; foodCollected: number;

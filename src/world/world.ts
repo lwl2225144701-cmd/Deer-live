@@ -1,5 +1,5 @@
-import { DEFAULT_SETTINGS, type InitialWorldSettings, type LifeSettings } from './settings.ts';
-import type { LearningRecord } from './learning.ts';
+import { DEFAULT_SETTINGS, type InitialWorldSettings, type LifeSettings } from '../config/settings.ts';
+import type { LearningRecord } from '../agent/learning.ts';
 
 export type Action = { type: 'move'; dx: number; dy: number } | { type: 'rest' | 'eat' | 'explore' };
 export type Agent = { name: string; x: number; y: number; hunger: number; energy: number; curiosity: number; food: number };

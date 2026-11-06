@@ -1,11 +1,11 @@
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
-import { Store } from './store.ts';
-import { OllamaBrain } from './brain.ts';
+import { Store } from '../storage/store.ts';
+import { OllamaBrain } from '../agent/brain.ts';
 import { tick } from './runtime.ts';
-import { initialWorld } from './world.ts';
-import { loadSettings } from './settings.ts';
+import { initialWorld } from '../world/world.ts';
+import { loadSettings } from '../config/settings.ts';
 
 const usage = `DeerLive 本地生命循环
 用法：npm start -- <命令>

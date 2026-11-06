@@ -1,9 +1,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { OllamaBrain, decisionRequest, type Decision } from '../src/brain.ts';
-import { Store } from '../src/store.ts';
-import { advance, initialWorld, type Action } from '../src/world.ts';
-import { loadSettings, DEFAULT_SETTINGS } from '../src/settings.ts';
+import { OllamaBrain, decisionRequest, type Decision } from '../../src/agent/brain.ts';
+import { Store } from '../../src/storage/store.ts';
+import { advance, initialWorld, type Action } from '../../src/world/world.ts';
+import { loadSettings, DEFAULT_SETTINGS } from '../../src/config/settings.ts';
 
 // Controlled scenario: true actions produce a memory of a food site outside
 // the current visual radius. Compare identical observations with/without it.

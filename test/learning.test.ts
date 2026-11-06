@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { Store } from '../src/store.ts';
-import { advance, initialWorld, choices, type Action } from '../src/world.ts';
-import { OllamaBrain, decisionRequest } from '../src/brain.ts';
-import { tick } from '../src/runtime.ts';
-import { updateGoal, type ExplorationGoal } from '../src/learning.ts';
+import { Store } from '../src/storage/store.ts';
+import { advance, initialWorld, choices, type Action } from '../src/world/world.ts';
+import { OllamaBrain, decisionRequest } from '../src/agent/brain.ts';
+import { tick } from '../src/app/runtime.ts';
+import { updateGoal, type ExplorationGoal } from '../src/agent/learning.ts';
 
 const mock = (output: unknown) => new OllamaBrain({ fetcher: (async () => new Response(JSON.stringify({ done: true, done_reason: 'stop', message: { content: JSON.stringify(output) } }))) as typeof fetch });
 function act(store: Store, action: Action) {

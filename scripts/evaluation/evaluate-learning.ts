@@ -2,10 +2,10 @@ import { DatabaseSync, backup } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { Store } from '../src/store.ts';
-import { OllamaBrain } from '../src/brain.ts';
-import { tick } from '../src/runtime.ts';
-import { loadSettings } from '../src/settings.ts';
+import { Store } from '../../src/storage/store.ts';
+import { OllamaBrain } from '../../src/agent/brain.ts';
+import { tick } from '../../src/app/runtime.ts';
+import { loadSettings } from '../../src/config/settings.ts';
 
 // Compare the same saved state, then run a separate strict rollout. No writes
 // to the source; no fallback or hidden model reasoning in the evidence file.
