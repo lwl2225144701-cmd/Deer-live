@@ -1,0 +1,569 @@
+{
+  "attempts": [
+    {
+      "date": "2026-11-06T09:33:28.959Z",
+      "scope": "独立存档副本的真实浏览器单步；原存档服务保持暂停。严格模式，模型截断未推进。",
+      "beforeTick": 18,
+      "afterTick": 18,
+      "event": {
+        "tick": 18,
+        "action": {
+          "type": "explore"
+        },
+        "reason": "模型选择：仔细探索脚下的位置，有食物时采集一份",
+        "outcome": "探索草地，没有找到食物",
+        "experience": {
+          "before": {
+            "name": "小鹿",
+            "x": 4,
+            "y": 4,
+            "hunger": 54,
+            "energy": 39,
+            "curiosity": 3,
+            "food": 0
+          },
+          "after": {
+            "name": "小鹿",
+            "x": 4,
+            "y": 4,
+            "hunger": 56,
+            "energy": 34,
+            "curiosity": 3,
+            "food": 0
+          }
+        },
+        "observation": {
+          "x": 4,
+          "y": 4,
+          "place": "草地",
+          "foodRemaining": 0
+        },
+        "cognition": {
+          "source": "ollama",
+          "model": "deepseek-r1:1.5b",
+          "latencyMs": 22149,
+          "offeredMemoryIds": [
+            "event:17",
+            "event:8",
+            "event:3"
+          ],
+          "offeredExperienceTicks": [
+            15,
+            16,
+            17
+          ]
+        },
+        "learning": {
+          "offered": {
+            "facts": [
+              {
+                "x": 4,
+                "y": 4,
+                "attempts": 1,
+                "emptyAttempts": 1,
+                "foodCollected": 0,
+                "energySpent": 5,
+                "firstTick": 17,
+                "lastTick": 17,
+                "lastFoodRemaining": 0
+              },
+              {
+                "x": 4,
+                "y": 3,
+                "attempts": 1,
+                "emptyAttempts": 1,
+                "foodCollected": 0,
+                "energySpent": 5,
+                "firstTick": 8,
+                "lastTick": 8,
+                "lastFoodRemaining": 0
+              },
+              {
+                "x": 2,
+                "y": 1,
+                "attempts": 2,
+                "emptyAttempts": 2,
+                "foodCollected": 0,
+                "energySpent": 10,
+                "firstTick": 2,
+                "lastTick": 3,
+                "lastFoodRemaining": 0
+              }
+            ],
+            "recentMoves": [
+              {
+                "tick": 12,
+                "from": {
+                  "x": 4,
+                  "y": 4
+                },
+                "to": {
+                  "x": 3,
+                  "y": 4
+                },
+                "source": "fallback"
+              },
+              {
+                "tick": 13,
+                "from": {
+                  "x": 3,
+                  "y": 4
+                },
+                "to": {
+                  "x": 4,
+                  "y": 4
+                },
+                "source": "ollama"
+              },
+              {
+                "tick": 14,
+                "from": {
+                  "x": 4,
+                  "y": 4
+                },
+                "to": {
+                  "x": 3,
+                  "y": 4
+                },
+                "source": "ollama"
+              },
+              {
+                "tick": 15,
+                "from": {
+                  "x": 3,
+                  "y": 4
+                },
+                "to": {
+                  "x": 4,
+                  "y": 4
+                },
+                "source": "ollama"
+              }
+            ],
+            "immediateReversals": 3,
+            "goal": null
+          },
+          "goalBeforeAction": null,
+          "goalAfter": null
+        }
+      },
+      "simulation": {
+        "running": false,
+        "busy": false,
+        "error": "模型输出不完整（结束原因：length）",
+        "model": "deepseek-r1:1.5b",
+        "strict": true
+      },
+      "ui": {
+        "tick": "18",
+        "lastEvent": "探索草地，没有找到食物",
+        "runButton": "Ⅱ暂停生活",
+        "error": "",
+        "stage": {
+          "x": 53,
+          "y": 306.59375,
+          "width": 1001,
+          "height": 689.5625,
+          "top": 306.59375,
+          "right": 1054,
+          "bottom": 996.15625,
+          "left": 53
+        },
+        "canvas": {
+          "x": 53,
+          "y": 306.59375,
+          "width": 1001,
+          "height": 689.5625,
+          "top": 306.59375,
+          "right": 1054,
+          "bottom": 996.15625,
+          "left": 53
+        },
+        "deer": {
+          "x": 485.9375,
+          "y": 656.3312377929688,
+          "width": 135.125,
+          "height": 142.53125,
+          "top": 656.3312377929688,
+          "right": 621.0625,
+          "bottom": 798.8624877929688,
+          "left": 485.9375
+        }
+      },
+      "errors": [],
+      "originalTick": 18
+    },
+    {
+      "date": "2026-11-06T09:35:34.295Z",
+      "scope": "独立存档副本的真实浏览器单步；原存档服务保持暂停。严格模式，模型截断未推进。",
+      "beforeTick": 18,
+      "afterTick": 18,
+      "event": {
+        "tick": 18,
+        "action": {
+          "type": "explore"
+        },
+        "reason": "模型选择：仔细探索脚下的位置，有食物时采集一份",
+        "outcome": "探索草地，没有找到食物",
+        "experience": {
+          "before": {
+            "name": "小鹿",
+            "x": 4,
+            "y": 4,
+            "hunger": 54,
+            "energy": 39,
+            "curiosity": 3,
+            "food": 0
+          },
+          "after": {
+            "name": "小鹿",
+            "x": 4,
+            "y": 4,
+            "hunger": 56,
+            "energy": 34,
+            "curiosity": 3,
+            "food": 0
+          }
+        },
+        "observation": {
+          "x": 4,
+          "y": 4,
+          "place": "草地",
+          "foodRemaining": 0
+        },
+        "cognition": {
+          "source": "ollama",
+          "model": "deepseek-r1:1.5b",
+          "latencyMs": 22149,
+          "offeredMemoryIds": [
+            "event:17",
+            "event:8",
+            "event:3"
+          ],
+          "offeredExperienceTicks": [
+            15,
+            16,
+            17
+          ]
+        },
+        "learning": {
+          "offered": {
+            "facts": [
+              {
+                "x": 4,
+                "y": 4,
+                "attempts": 1,
+                "emptyAttempts": 1,
+                "foodCollected": 0,
+                "energySpent": 5,
+                "firstTick": 17,
+                "lastTick": 17,
+                "lastFoodRemaining": 0
+              },
+              {
+                "x": 4,
+                "y": 3,
+                "attempts": 1,
+                "emptyAttempts": 1,
+                "foodCollected": 0,
+                "energySpent": 5,
+                "firstTick": 8,
+                "lastTick": 8,
+                "lastFoodRemaining": 0
+              },
+              {
+                "x": 2,
+                "y": 1,
+                "attempts": 2,
+                "emptyAttempts": 2,
+                "foodCollected": 0,
+                "energySpent": 10,
+                "firstTick": 2,
+                "lastTick": 3,
+                "lastFoodRemaining": 0
+              }
+            ],
+            "recentMoves": [
+              {
+                "tick": 12,
+                "from": {
+                  "x": 4,
+                  "y": 4
+                },
+                "to": {
+                  "x": 3,
+                  "y": 4
+                },
+                "source": "fallback"
+              },
+              {
+                "tick": 13,
+                "from": {
+                  "x": 3,
+                  "y": 4
+                },
+                "to": {
+                  "x": 4,
+                  "y": 4
+                },
+                "source": "ollama"
+              },
+              {
+                "tick": 14,
+                "from": {
+                  "x": 4,
+                  "y": 4
+                },
+                "to": {
+                  "x": 3,
+                  "y": 4
+                },
+                "source": "ollama"
+              },
+              {
+                "tick": 15,
+                "from": {
+                  "x": 3,
+                  "y": 4
+                },
+                "to": {
+                  "x": 4,
+                  "y": 4
+                },
+                "source": "ollama"
+              }
+            ],
+            "immediateReversals": 3,
+            "goal": null
+          },
+          "goalBeforeAction": null,
+          "goalAfter": null
+        }
+      },
+      "simulation": {
+        "running": false,
+        "busy": false,
+        "error": "模型输出不完整（结束原因：length）",
+        "model": "deepseek-r1:1.5b",
+        "strict": true
+      },
+      "ui": {
+        "tick": "18",
+        "lastEvent": "探索草地，没有找到食物",
+        "runButton": "▶开始生活",
+        "error": "模型输出不完整（结束原因：length）",
+        "stage": {
+          "x": 53,
+          "y": 306.59375,
+          "width": 1001,
+          "height": 689.5625,
+          "top": 306.59375,
+          "right": 1054,
+          "bottom": 996.15625,
+          "left": 53
+        },
+        "canvas": {
+          "x": 53,
+          "y": 306.59375,
+          "width": 1001,
+          "height": 689.5625,
+          "top": 306.59375,
+          "right": 1054,
+          "bottom": 996.15625,
+          "left": 53
+        },
+        "deer": {
+          "x": 485.9375,
+          "y": 656.3312377929688,
+          "width": 135.125,
+          "height": 142.53125,
+          "top": 656.3312377929688,
+          "right": 621.0625,
+          "bottom": 798.8624877929688,
+          "left": 485.9375
+        }
+      },
+      "errors": [],
+      "originalTick": 18
+    },
+    {
+      "date": "2026-11-06T09:37:06.953Z",
+      "scope": "独立存档副本的真实浏览器单步；原存档服务保持暂停。默认模式，模型截断后规则接管。",
+      "beforeTick": 18,
+      "afterTick": 19,
+      "event": {
+        "tick": 19,
+        "action": {
+          "type": "move",
+          "dx": 0,
+          "dy": -1
+        },
+        "reason": "前往较少到访的地方",
+        "outcome": "移动到 (4, 3)",
+        "experience": {
+          "before": {
+            "name": "小鹿",
+            "x": 4,
+            "y": 4,
+            "hunger": 56,
+            "energy": 34,
+            "curiosity": 3,
+            "food": 0
+          },
+          "after": {
+            "name": "小鹿",
+            "x": 4,
+            "y": 3,
+            "hunger": 58,
+            "energy": 31,
+            "curiosity": 6,
+            "food": 0
+          }
+        },
+        "cognition": {
+          "source": "fallback",
+          "model": "deepseek-r1:1.5b",
+          "latencyMs": 22878,
+          "offeredMemoryIds": [
+            "event:18",
+            "event:8",
+            "event:3"
+          ],
+          "offeredExperienceTicks": [
+            15,
+            16,
+            18
+          ],
+          "error": "模型输出不完整（结束原因：length）"
+        },
+        "learning": {
+          "offered": {
+            "facts": [
+              {
+                "x": 4,
+                "y": 4,
+                "attempts": 2,
+                "emptyAttempts": 2,
+                "foodCollected": 0,
+                "energySpent": 10,
+                "firstTick": 17,
+                "lastTick": 18,
+                "lastFoodRemaining": 0
+              },
+              {
+                "x": 4,
+                "y": 3,
+                "attempts": 1,
+                "emptyAttempts": 1,
+                "foodCollected": 0,
+                "energySpent": 5,
+                "firstTick": 8,
+                "lastTick": 8,
+                "lastFoodRemaining": 0
+              },
+              {
+                "x": 2,
+                "y": 1,
+                "attempts": 2,
+                "emptyAttempts": 2,
+                "foodCollected": 0,
+                "energySpent": 10,
+                "firstTick": 2,
+                "lastTick": 3,
+                "lastFoodRemaining": 0
+              }
+            ],
+            "recentMoves": [
+              {
+                "tick": 13,
+                "from": {
+                  "x": 3,
+                  "y": 4
+                },
+                "to": {
+                  "x": 4,
+                  "y": 4
+                },
+                "source": "ollama"
+              },
+              {
+                "tick": 14,
+                "from": {
+                  "x": 4,
+                  "y": 4
+                },
+                "to": {
+                  "x": 3,
+                  "y": 4
+                },
+                "source": "ollama"
+              },
+              {
+                "tick": 15,
+                "from": {
+                  "x": 3,
+                  "y": 4
+                },
+                "to": {
+                  "x": 4,
+                  "y": 4
+                },
+                "source": "ollama"
+              }
+            ],
+            "immediateReversals": 2,
+            "goal": null
+          },
+          "goalBeforeAction": null,
+          "goalAfter": null
+        }
+      },
+      "simulation": {
+        "running": false,
+        "busy": false,
+        "error": null,
+        "model": "deepseek-r1:1.5b",
+        "strict": false
+      },
+      "ui": {
+        "tick": "19",
+        "lastEvent": "移动到 (4, 3)模型未完成这一步，已由规则接管",
+        "runButton": "▶开始生活",
+        "error": "",
+        "stage": {
+          "x": 53,
+          "y": 306.59375,
+          "width": 1001,
+          "height": 689.5625,
+          "top": 306.59375,
+          "right": 1054,
+          "bottom": 996.15625,
+          "left": 53
+        },
+        "canvas": {
+          "x": 53,
+          "y": 306.59375,
+          "width": 1001,
+          "height": 689.5625,
+          "top": 306.59375,
+          "right": 1054,
+          "bottom": 996.15625,
+          "left": 53
+        },
+        "deer": {
+          "x": 552.53125,
+          "y": 621.7062377929688,
+          "width": 135.125,
+          "height": 142.53125,
+          "top": 621.7062377929688,
+          "right": 687.65625,
+          "bottom": 764.2374877929688,
+          "left": 552.53125
+        }
+      },
+      "errors": [],
+      "originalTick": 18
+    }
+  ],
+  "summary": "三次均实际调用本机模型。两次严格模式截断而未提交；一次默认模式截断后由规则推进副本到第19步。原存档仍第18步。无浏览器脚本错误；不证明模型行为质量或训练效果。"
+}

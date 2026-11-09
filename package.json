@@ -1,6 +1,6 @@
 {
   "name": "deer-live",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -13,6 +13,7 @@
     "evaluate:learning": "node scripts/evaluation/evaluate-learning.ts",
     "diagnose:learning": "node scripts/diagnostics/diagnose-learning.ts",
     "diagnose:step18": "node scripts/diagnostics/diagnose-step18.ts",
-    "verify:compact": "node scripts/diagnostics/verify-compact.ts"
+    "verify:compact": "node scripts/diagnostics/verify-compact.ts",
+    "web": "node src/web/server.ts"
   }
 }

@@ -13,3 +13,5 @@
 - `diagnostics/compact-verification-2026-11-06T07-59-09-133Z/report.json`：旧提示的三个合成场景检查。
 
 读取这些归档无需本地模型；重新执行历史诊断需要本机 Ollama 和与记录相符的 `data/newborn.sqlite`，克隆仓库不会带入原有小鹿存档。`npm test` 不依赖模型或存档。
+
+- `ui/2026-11-06-browser-smoke.json`：2D浏览器单步实测，包含严格模式错误展示和默认规则接管；原存档保持第18步。

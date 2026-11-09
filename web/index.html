@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f6f5ef"><title>DeerLive · 小鹿的森林</title><link rel="icon" href="/assets/leaf.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><script type="module" src="/app.js"></script></head>
+<body>
+<header class="topbar"><a class="brand" href="/" aria-label="DeerLive 首页"><span class="brand-mark">✳</span>Deer<span>Live</span><small>一只小鹿，一个世界</small></a><div class="top-meta"><span class="local-dot"></span>本地生长 <span class="divider"></span><span id="save-status">正在连接世界…</span></div></header>
+<main>
+  <section class="intro"><div><div class="eyebrow">A LITTLE LIFE, A LITTLE WORLD</div><h1>慢慢长大，慢慢认识世界<span>。</span></h1><p>一片草地，几颗浆果。陪小鹿度过它的每一个小小发现。</p></div><div class="day-tag"><span>☀</span><div>森林时刻<strong>第 <b id="tick">—</b> 步</strong></div></div></section>
+  <div class="main-grid">
+    <section class="world-card" aria-label="小鹿的二维世界">
+      <div class="world-toolbar"><div><span class="world-dot"></span><strong>初生森林</strong><span class="subtle" id="map-size">5 × 5 小世界</span></div><div class="view-toggles"><button id="trail-toggle" class="icon-toggle active" aria-pressed="true" title="显示最近足迹">⌁ <span>足迹</span></button><button id="grid-toggle" class="icon-toggle" aria-pressed="false" title="显示网格">▦ <span>网格</span></button></div></div>
+      <div class="stage" id="stage">
+        <canvas id="world-canvas" width="900" height="620" aria-label="森林地图，可点击地点查看资源和到访记录"></canvas>
+        <div class="scene-caption"><span class="tiny-leaf">❧</span> 让好奇心，带它走远一点。</div>
+        <div id="deer" class="deer" aria-label="小鹿"><span class="deer-bubble" id="deer-bubble">你好，小世界</span><span class="deer-shadow"></span><img src="/assets/deer.png" alt="暖棕色、有大眼睛和白色斑点的卡通小鹿" draggable="false"><span class="deer-name" id="deer-name">小鹿</span></div>
+        <div class="place-tooltip hidden" id="place-tooltip" role="status"></div>
+        <div class="scene-note"><span class="live-indicator" id="scene-indicator"></span><span id="scene-status">正在连接</span></div><div class="scene-coordinate" id="position">—</div>
+      </div>
+      <div class="world-bottom"><span><i class="legend-dot"></i> 观察者视角 · 地图全景</span><span id="visited">到访 — 处</span><span>点击地点，看看这里有什么 <span class="arrow">↗</span></span></div>
+      <div class="controls"><div class="control-message"><span id="control-icon">◌</span><div><strong id="control-title">等小鹿醒来</strong><span id="control-subtitle">世界正在连接中</span></div></div><div class="control-buttons"><button id="step-button" class="button secondary" disabled><span>↝</span> 走一步</button><button id="run-button" class="button primary" disabled><span>▶</span> 开始生活</button></div></div>
+      <div id="error-message" class="error-message hidden" role="alert"></div>
+    </section>
+    <aside class="sidebar">
+      <section class="profile-card"><div class="card-kicker">MEET YOUR LITTLE DEER <span>✧</span></div><div class="profile-heading"><div class="portrait"><img src="/assets/deer.png" alt="小鹿头像"></div><div><h2 id="profile-name">小鹿 <span>初来乍到</span></h2><p>刚出生，正在认识这个世界</p><div class="mood" id="mood">◌ 正在醒来</div></div></div>
+        <div class="needs"><div class="need"><div><span><i class="need-icon hunger">◒</i>饥饿</span><strong id="hunger-value">—<small>/100</small></strong></div><div class="meter"><span id="hunger-bar" class="hunger-bar"></span></div></div><div class="need"><div><span><i class="need-icon energy">ϟ</i>精力</span><strong id="energy-value">—<small>/100</small></strong></div><div class="meter"><span id="energy-bar" class="energy-bar"></span></div></div><div class="need"><div><span><i class="need-icon curiosity">✧</i>好奇心</span><strong id="curiosity-value">—<small>/100</small></strong></div><div class="meter"><span id="curiosity-bar" class="curiosity-bar"></span></div></div></div>
+        <div class="pocket"><span>♧ <span>小小口袋</span></span><strong><b id="food-value">—</b> 份食物</strong></div>
+      </section>
+      <section class="goal-card"><div class="section-label"><span>⚑</span> 此刻的小目标</div><p id="goal-text">正在看看四周</p><span class="muted" id="goal-detail">目标由小鹿自己选择</span></section>
+      <section class="memory-card"><div class="section-label"><span>❧</span> 留下的小小经历</div><div class="memory-numbers"><div><strong id="memory-count">—</strong><span>记得的地点</span></div><div><strong id="attempt-count">—</strong><span>这些地点的尝试</span></div><div><strong id="food-collected">—</strong><span>份食物收获</span></div></div><p id="memory-note">经历正在一点一点留下来。</p></section>
+      <div class="sidebar-note">每一步，都是真实记录的经历。<br>会不会变聪明，还需要慢慢验证。</div>
+    </aside>
+  </div>
+  <section class="journal"><div class="journal-heading"><div><span class="eyebrow">LITTLE MOMENTS</span><h2>森林日记 <span>那些小小的尝试，都值得记住。</span></h2></div><span class="journal-latest">最近 <b id="event-count">0</b> 条</span></div><div id="event-list" class="event-list"><p class="empty-state">还没有脚印。第一段故事，等小鹿自己开始。</p></div></section>
+  <footer><span>DeerLive <span class="footer-spark">✳</span> 让一个小生命，慢慢拥有自己的故事。</span><span id="model-name">本地模型 · 连接中</span></footer>
+</main><div class="toast hidden" id="toast" role="status"></div>
+</body></html>
