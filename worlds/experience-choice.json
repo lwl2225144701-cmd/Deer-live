@@ -1,0 +1,35 @@
+{
+  "name": "经验选择洞",
+  "width": 5,
+  "height": 5,
+  "start": [2, 3],
+  "body": { "hunger": 100, "energy": 48 },
+  "entities": [
+    {
+      "id": "item-a",
+      "name": "甲物",
+      "kind": "plant",
+      "at": [1, 3],
+      "count": 0,
+      "affordances": [
+        { "verb": "use", "manner": "eat", "label": "吃一口", "requires": "count>=1" }
+      ],
+      "effects": {
+        "use/eat": [{ "on": "body", "field": "hunger", "delta": -30 }, { "on": "self", "field": "count", "delta": -1 }]
+      }
+    },
+    {
+      "id": "item-b",
+      "name": "乙物",
+      "kind": "plant",
+      "at": [3, 3],
+      "count": 0,
+      "affordances": [
+        { "verb": "use", "manner": "eat", "label": "吃一口", "requires": "count>=1" }
+      ],
+      "effects": {
+        "use/eat": [{ "on": "body", "field": "hunger", "delta": 0 }, { "on": "self", "field": "count", "delta": -1 }]
+      }
+    }
+  ]
+}

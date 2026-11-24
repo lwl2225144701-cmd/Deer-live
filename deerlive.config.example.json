@@ -19,13 +19,17 @@
     "maxExperiences": 4
   },
   "model": {
-    "name": "deepseek-r1:1.5b",
-    "timeoutMs": 30000,
-    "numPredict": 1024,
+    "provider": "openai-compatible",
+    "name": "step-5-preview",
+    "baseUrl": "https://api.stepfun.com/step_plan/v1",
+    "apiKey": "在此填入你的模型服务密钥",
+    "timeoutMs": 120000,
+    "numPredict": 4096,
     "numCtx": 4096,
     "temperature": 0.6,
     "topP": 0.95,
-    "seed": 42
+    "seed": 42,
+    "reasoningEffort": ""
   },
   "run": {
     "liveSteps": 10,

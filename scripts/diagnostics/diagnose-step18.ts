@@ -18,6 +18,7 @@ const events = (source.prepare('SELECT data FROM events WHERE tick <= 18 ORDER B
 source.close();
 assert.equal(events.length, 18, '需要完整的前18步记录');
 const { settings } = loadSettings();
+if (settings.model.provider !== 'ollama') throw new Error('这些历史诊断固定使用本机 Ollama，尚未适配 OpenAI 兼容协议；请先将 model.provider 切回 ollama');
 const store = new Store(':memory:');
 let world = store.initialize(initialWorld(settings.initialWorld));
 for (const event of events.slice(0, 17)) {

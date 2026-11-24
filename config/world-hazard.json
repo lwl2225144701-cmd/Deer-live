@@ -1,0 +1,18 @@
+{
+  "width": 8,
+  "height": 8,
+  "foodRegrowEveryTicks": 60,
+  "places": [
+    { "x": 1, "y": 1, "name": "浆果丛", "food": 2, "capacity": 2, "foodRegrowEveryTicks": 25 },
+    { "x": 7, "y": 1, "name": "蜜果园", "food": 3, "capacity": 3, "foodRegrowEveryTicks": 60 },
+    { "x": 2, "y": 7, "name": "蘑菇圈", "food": 2, "capacity": 2, "foodRegrowEveryTicks": 0 },
+    { "x": 6, "y": 7, "name": "蜜树", "food": 1, "capacity": 1, "foodRegrowEveryTicks": 15 },
+    { "x": 4, "y": 4, "name": "岩石", "food": 0, "capacity": 0 },
+    { "x": 0, "y": 4, "name": "溪流", "food": 0, "capacity": 0 },
+    { "x": 2, "y": 2, "name": "洞口", "food": 0, "capacity": 0 },
+    { "x": 5, "y": 2, "name": "雾泽", "food": 0, "capacity": 0, "hazard": { "hunger": 10, "energy": 6 } },
+    { "x": 6, "y": 2, "name": "雾泽东", "food": 0, "capacity": 0, "hazard": { "hunger": 10, "energy": 6 } },
+    { "x": 3, "y": 4, "name": "荆棘丛", "food": 0, "capacity": 0, "hazard": { "hunger": 8, "energy": 5 } },
+    { "x": 4, "y": 6, "name": "沼泽", "food": 0, "capacity": 0, "hazard": { "hunger": 8, "energy": 5 } }
+  ]
+}

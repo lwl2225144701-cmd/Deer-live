@@ -1,0 +1,427 @@
+{
+  "kind": "minimal-experience",
+  "at": "2026-11-16T08:29:24.295Z",
+  "model": "step-5-preview",
+  "modelSettings": {
+    "provider": "openai-compatible",
+    "name": "step-5-preview",
+    "timeoutMs": 120000,
+    "numPredict": 4096,
+    "numCtx": 4096,
+    "temperature": 0.6,
+    "topP": 0.95,
+    "seed": 42,
+    "baseUrl": "https://api.stepfun.com/step_plan/v1",
+    "apiKey": "已配置（未写入报告）",
+    "reasoningEffort": ""
+  },
+  "design": "不提供地图、坐标、周围实体，只保留身体、随身物品、可选动作与短句经验。",
+  "summary": {
+    "without-experience": {
+      "samples": 4,
+      "valid": 3,
+      "correctChoice": 1,
+      "recovered": 1,
+      "waited": 1,
+      "mentionedPast": 0
+    },
+    "sentence-experience": {
+      "samples": 4,
+      "valid": 4,
+      "correctChoice": 4,
+      "recovered": 4,
+      "waited": 0,
+      "mentionedPast": 4
+    }
+  },
+  "samples": [
+    {
+      "seed": 42,
+      "condition": "without-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "{\n  \"think\": \"用户提供了一个JSON格式的状态数据，包含饥饿度、能量、状态和背包物品。没有明确提问，但需要我分析这个状态并给出建议。关键信息：饥饿100（可能是满值/极度饥饿）、能量48（中等偏低）、状态为cannot_move（无法移动）、背包有甲物×3和乙物×3。应该用中文回复，因为物品名称是中文。需要分析当前危机并提供可能的行动方案。\",\n  \"do\": \"wait\"\n}",
+      "think": "用户提供了一个JSON格式的状态数据，包含饥饿度、能量、状态和背包物品。没有明确提问，但需要我分析这个状态并给出建议。关键信息：饥饿100（可能是满值/极度饥饿）、能量48（中等偏低）、状态为cannot_move（无法移动）、背包有甲物×3和乙物×3。应该用中文回复，因为物品名称是中文。需要分析当前危机并提供可能的行动方案。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 5615,
+      "error": null
+    },
+    {
+      "seed": 42,
+      "condition": "sentence-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身甲物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\n  \"think\": \"当前状态与过去经验完全一致：饥饿 100、不能移动。过去吃 1 份随身甲物后，饥饿降到 72 并恢复移动。因此最合理的动作是吃 1 个甲物。\",\n  \"do\": \"use:item-a:eat\"\n}",
+      "think": "当前状态与过去经验完全一致：饥饿 100、不能移动。过去吃 1 份随身甲物后，饥饿降到 72 并恢复移动。因此最合理的动作是吃 1 个甲物。",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": true,
+      "mentionedPast": true,
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 6191,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "without-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "{\n  \"think\": \"用户提供了一段JSON格式的角色状态数据，但没有提出具体问题。我需要分析当前状态并给出合理的解读和建议。\",\n  \"do\": \"use:item-a:eat\"\n}",
+      "think": "用户提供了一段JSON格式的角色状态数据，但没有提出具体问题。我需要分析当前状态并给出合理的解读和建议。",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": false,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 9630,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "sentence-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身乙物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\"think\":\"当前状态与过去经验完全匹配：饥饿 100、不能移动。经验显示吃一份随身乙物后，饥饿降到 72 并恢复移动。因此优先吃乙物。\",\"do\":\"use:item-b:eat\"}",
+      "think": "当前状态与过去经验完全匹配：饥饿 100、不能移动。经验显示吃一份随身乙物后，饥饿降到 72 并恢复移动。因此优先吃乙物。",
+      "action": "use:item-b:eat",
+      "outcome": "吃一口（乙物）",
+      "recovered": true,
+      "mentionedPast": true,
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 2
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 5635,
+      "error": null
+    },
+    {
+      "seed": 44,
+      "condition": "without-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "",
+      "think": null,
+      "action": null,
+      "outcome": null,
+      "recovered": false,
+      "mentionedPast": false,
+      "after": null,
+      "doneReason": null,
+      "durationMs": 26797,
+      "error": "模型输出不完整（结束原因：length，reasoning 2781 字）"
+    },
+    {
+      "seed": 44,
+      "condition": "sentence-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身甲物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\n  \"think\": \"当前状态与过去经验完全匹配：饥饿 100、不能移动。过去吃一份随身甲物后，饥饿降到 72 并恢复移动。库存中有 3 份甲物，足够使用。\",\n  \"do\": \"use:item-a:eat\"\n}",
+      "think": "当前状态与过去经验完全匹配：饥饿 100、不能移动。过去吃一份随身甲物后，饥饿降到 72 并恢复移动。库存中有 3 份甲物，足够使用。",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": true,
+      "mentionedPast": true,
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 5859,
+      "error": null
+    },
+    {
+      "seed": 45,
+      "condition": "without-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "{\n  \"think\": \"用户提供了一段 JSON 状态数据，没有明确提问。最合理的回应是解析并总结当前状态，并询问下一步需要做什么。\",\n  \"do\": \"use:item-b:eat\"\n}",
+      "think": "用户提供了一段 JSON 状态数据，没有明确提问。最合理的回应是解析并总结当前状态，并询问下一步需要做什么。",
+      "action": "use:item-b:eat",
+      "outcome": "吃一口（乙物）",
+      "recovered": true,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 2
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 3397,
+      "error": null
+    },
+    {
+      "seed": 45,
+      "condition": "sentence-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身乙物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\n  \"think\": \"当前饥饿 100 且不能移动；过去唯一相关经验表明，吃一份随身乙物后饥饿降到 72 并恢复移动。因此优先使用乙物。\",\n  \"do\": \"use:item-b:eat\"\n}",
+      "think": "当前饥饿 100 且不能移动；过去唯一相关经验表明，吃一份随身乙物后饥饿降到 72 并恢复移动。因此优先使用乙物。",
+      "action": "use:item-b:eat",
+      "outcome": "吃一口（乙物）",
+      "recovered": true,
+      "mentionedPast": true,
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 2
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 4938,
+      "error": null
+    }
+  ]
+}

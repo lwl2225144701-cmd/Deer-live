@@ -1,0 +1,1106 @@
+{
+  "kind": "experience-choice",
+  "at": "2026-11-16T06:36:00.415Z",
+  "model": "qwen3:8b",
+  "design": "甲乙两种物品都能吃，只有一种能恢复；正确答案位置随种子交替；经验只记录过去事实，不给当前指令。",
+  "initial": {
+    "hunger": 100,
+    "energy": 48,
+    "itemCounts": {
+      "甲物": 3,
+      "乙物": 3
+    },
+    "position": [
+      2,
+      3
+    ]
+  },
+  "summary": {
+    "withoutExperience": {
+      "samples": 4,
+      "valid": 4,
+      "correctChoice": 1,
+      "recovered": 1,
+      "waited": 2,
+      "mentionedPast": 0
+    },
+    "withExperience": {
+      "samples": 4,
+      "valid": 4,
+      "correctChoice": 0,
+      "recovered": 0,
+      "waited": 4,
+      "mentionedPast": 2
+    }
+  },
+  "samples": [
+    {
+      "seed": 42,
+      "condition": "without-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": []
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要分析用户提供的JSON数据，并生成一个合适的回应。首先，我需要理解数据的结构和内容。用户的数据包括角色的状态、周围环境以及一些动作选项。\"\n\n  ,\n  \"do\": \"wait\"\n}",
+      "think": "好的，我现在需要分析用户提供的JSON数据，并生成一个合适的回应。首先，我需要理解数据的结构和内容。用户的数据包括角色的状态、周围环境以及一些动作选项。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 3601,
+      "error": null
+    },
+    {
+      "seed": 42,
+      "condition": "with-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": [],
+        "pastExperience": {
+          "source": "此前一处洞穴生活中的真实经历",
+          "before": {
+            "hunger": 100,
+            "condition": "cannot_move",
+            "item": "甲物",
+            "itemCount": 3
+          },
+          "action": "吃了一份随身甲物",
+          "after": {
+            "hunger": 72,
+            "condition": "can_move",
+            "itemCount": 2
+          },
+          "verifiedTimes": 1,
+          "itemId": "item-a"
+        }
+      },
+      "raw": "{\"think\"\n:\"-1\"\n,\"do\"\n:\"wait\"\n}",
+      "think": "-1",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 1358,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "without-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": []
+      },
+      "raw": "{\"think\": \"好的，我需要分析用户提供的这个JSON数据，并生成一个合适的回应。首先，我需要理解这个数据的结构和内容。看起来这是一个游戏或模拟环境的状态，包含角色的属性、库存、位置以及周围环境的信息。\"\n\n,\"do\": \"use:item-a:eat\"\n}",
+      "think": "好的，我需要分析用户提供的这个JSON数据，并生成一个合适的回应。首先，我需要理解这个数据的结构和内容。看起来这是一个游戏或模拟环境的状态，包含角色的属性、库存、位置以及周围环境的信息。",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": false,
+      "mentionedPast": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 3941,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "with-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": [],
+        "pastExperience": {
+          "source": "此前一处洞穴生活中的真实经历",
+          "before": {
+            "hunger": 100,
+            "condition": "cannot_move",
+            "item": "乙物",
+            "itemCount": 3
+          },
+          "action": "吃了一份随身乙物",
+          "after": {
+            "hunger": 72,
+            "condition": "can_move",
+            "itemCount": 2
+          },
+          "verifiedTimes": 1,
+          "itemId": "item-b"
+        }
+      },
+      "raw": "{\n  \"think\": \"好的，我需要处理用户提供的这个JSON数据，并生成一个符合要求的思考过程。首先，我要理解用户的需求。用户给了一个包含角色状态、周围环境、历史经验等信息的JSON对象，并希望我模拟一个思考过程，然后生成一个符合特定格式的回复。用户还提到，回复需要以特定的JSON格式呈现，包含思考过程和最终回答，且不能有其他信息。\"\n\n  ,\n  \"do\": \"wait\"\n}",
+      "think": "好的，我需要处理用户提供的这个JSON数据，并生成一个符合要求的思考过程。首先，我要理解用户的需求。用户给了一个包含角色状态、周围环境、历史经验等信息的JSON对象，并希望我模拟一个思考过程，然后生成一个符合特定格式的回复。用户还提到，回复需要以特定的JSON格式呈现，包含思考过程和最终回答，且不能有其他信息。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": true,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 6146,
+      "error": null
+    },
+    {
+      "seed": 44,
+      "condition": "without-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": []
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要处理用户提供的这个JSON数据，并生成一个符合要求的响应。首先，我要仔细分析用户提供的JSON结构，确保我完全理解其中的各个字段和它们的含义。用户给出的数据包括角色的状态、周围环境的信息以及一些其他细节。我的任务是根据这些信息，生成一个自然流畅的中文回复，同时保持格式的正确性。\"\n\n  ,\n  \"do\": \"use:item-a:eat\"\n  }\n  ",
+      "think": "好的，我现在需要处理用户提供的这个JSON数据，并生成一个符合要求的响应。首先，我要仔细分析用户提供的JSON结构，确保我完全理解其中的各个字段和它们的含义。用户给出的数据包括角色的状态、周围环境的信息以及一些其他细节。我的任务是根据这些信息，生成一个自然流畅的中文回复，同时保持格式的正确性。",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": true,
+      "mentionedPast": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 5966,
+      "error": null
+    },
+    {
+      "seed": 44,
+      "condition": "with-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": [],
+        "pastExperience": {
+          "source": "此前一处洞穴生活中的真实经历",
+          "before": {
+            "hunger": 100,
+            "condition": "cannot_move",
+            "item": "甲物",
+            "itemCount": 3
+          },
+          "action": "吃了一份随身甲物",
+          "after": {
+            "hunger": 72,
+            "condition": "can_move",
+            "itemCount": 2
+          },
+          "verifiedTimes": 1,
+          "itemId": "item-a"
+        }
+      },
+      "raw": "{\"think\"\n:\"-1\"\n,\"do\":\"wait\"\n}",
+      "think": "-1",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 1305,
+      "error": null
+    },
+    {
+      "seed": 45,
+      "condition": "without-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": []
+      },
+      "raw": "{\"think\": \"好的，我现在需要分析用户提供的JSON数据，并生成一个符合要求的响应。首先，我会仔细阅读用户提供的JSON结构，理解其中的各个字段和它们的含义。用户给出的数据包括角色的状态、周围环境的信息以及一些其他字段。接下来，我需要根据这些信息生成一个自然的中文回复，同时确保不使用Markdown格式，并且保持口语化。\"\n\n,\"do\": \"wait\"\n}",
+      "think": "好的，我现在需要分析用户提供的JSON数据，并生成一个符合要求的响应。首先，我会仔细阅读用户提供的JSON结构，理解其中的各个字段和它们的含义。用户给出的数据包括角色的状态、周围环境的信息以及一些其他字段。接下来，我需要根据这些信息生成一个自然的中文回复，同时确保不使用Markdown格式，并且保持口语化。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 5206,
+      "error": null
+    },
+    {
+      "seed": 45,
+      "condition": "with-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 0,
+            "can": [
+              "吃一口"
+            ]
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": [],
+        "pastExperience": {
+          "source": "此前一处洞穴生活中的真实经历",
+          "before": {
+            "hunger": 100,
+            "condition": "cannot_move",
+            "item": "乙物",
+            "itemCount": 3
+          },
+          "action": "吃了一份随身乙物",
+          "after": {
+            "hunger": 72,
+            "condition": "can_move",
+            "itemCount": 2
+          },
+          "verifiedTimes": 1,
+          "itemId": "item-b"
+        }
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要分析用户提供的JSON数据，并生成一个符合要求的回应。首先，我要仔细阅读并理解数据内容。用户的数据包括角色的当前状态、周围环境、以及过去的经验记录。我的任务是根据这些信息，生成一个自然的中文回应，帮助用户理解当前的情况，并给出下一步的建议或行动选项。\"\n\n  ,\n  \"do\": \"wait\"\n}",
+      "think": "好的，我现在需要分析用户提供的JSON数据，并生成一个符合要求的回应。首先，我要仔细阅读并理解数据内容。用户的数据包括角色的当前状态、周围环境、以及过去的经验记录。我的任务是根据这些信息，生成一个自然的中文回应，帮助用户理解当前的情况，并给出下一步的建议或行动选项。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": true,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 5442,
+      "error": null
+    }
+  ]
+}

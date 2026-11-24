@@ -1,0 +1,14 @@
+{
+  "width": 8,
+  "height": 8,
+  "foodRegrowEveryTicks": 60,
+  "places": [
+    { "x": 1, "y": 1, "name": "浆果丛", "food": 2, "capacity": 2, "foodRegrowEveryTicks": 20 },
+    { "x": 7, "y": 1, "name": "苹果树", "food": 3, "capacity": 3, "foodRegrowEveryTicks": 120 },
+    { "x": 3, "y": 6, "name": "蘑菇圈", "food": 2, "capacity": 2, "foodRegrowEveryTicks": 0 },
+    { "x": 6, "y": 6, "name": "蜜树", "food": 1, "capacity": 1, "foodRegrowEveryTicks": 15 },
+    { "x": 4, "y": 4, "name": "岩石", "food": 0, "capacity": 0 },
+    { "x": 0, "y": 4, "name": "溪流", "food": 0, "capacity": 0 },
+    { "x": 7, "y": 4, "name": "洞口", "food": 0, "capacity": 0 }
+  ]
+}

@@ -8,6 +8,7 @@ import { loadSettings } from '../../src/config/settings.ts';
 
 const baseline = JSON.parse(readFileSync(resolve(process.argv[2] || 'docs/evidence/diagnostics/step18-2026-11-06T07-20-36-596Z/report.json'), 'utf8'));
 const { settings } = loadSettings();
+if (settings.model.provider !== 'ollama') throw new Error('这些历史诊断固定使用本机 Ollama，尚未适配 OpenAI 兼容协议；请先将 model.provider 切回 ollama');
 const sourceHash = () => createHash('sha256').update(readFileSync(baseline.sourcePath)).digest('hex');
 const before = sourceHash();
 const dir = resolve('data/diagnostics', `compact-verification-${new Date().toISOString().replace(/[:.]/g, '-')}`);

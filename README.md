@@ -1,19 +1,22 @@
 # DeerLive
 
-DeerLive 是一个生活在小世界里、能够逐渐熟悉用户的数字小生命项目。当前为 **v0.5 本地 2D 实验原型**：角色定位是一只刚出生的小鹿，首要目标是养活自己，在真实行动经历中逐步适应世界。本地模型选择动作，世界规则执行，SQLite 保存状态、地点观察和行动前后的身体变化。行为质量与学习效果仍在验证中。
+DeerLive 是一个生活在小世界里、能够逐渐熟悉用户的数字小生命项目。当前为 **v0.5 本地 2D 实验原型**：角色定位是一只刚出生的小鹿，首要目标是养活自己，在真实行动经历中逐步适应世界。模型选择动作，世界规则执行，SQLite 保存状态、地点观察和行动前后的身体变化。行为质量与学习效果仍在验证中。
 
 ## 运行
 
-需要 Node.js 22.18 或更新版本，无需安装第三方依赖。Node.js 22 的内置 SQLite 可能显示 ExperimentalWarning。模型模式需要本机 Ollama 正在运行，且已下载 `deepseek-r1:1.5b`；程序不会自动下载模型。
+需要 Node.js 22.18 或更新版本，无需安装第三方依赖。Node.js 22 的内置 SQLite 可能显示 ExperimentalWarning。模型选择动作有两种接法：本机 Ollama（默认，需要已下载对应模型），或 OpenAI 兼容的云端服务（见下文「模型服务」）。程序不会自动下载模型。
 
 ```bash
 DEER_LIVE_DB=data/newborn.sqlite npm run web  # 打开本地2D世界：http://127.0.0.1:4317
 npm start -- init         # 初始化或读取已有世界
-npm start -- live 6       # 让本地模型选择并执行 6 次动作
+npm start -- live 6       # 让配置的模型选择并执行 6 次动作
 npm start -- run 1000     # 持续运行，每次决策完成后等待 1000 毫秒
 npm start -- status       # 查看世界和最近 10 条事件
 npm start -- memories     # 查看当前可检索的地点记忆
 npm start -- experiences  # 查看行动经历及前后身体状态
+npm start -- patterns     # 查看经验库统计和当前情境可检索的经验线索
+npm start -- thinking     # 查看自我判断：模型基于经历写下的信念
+npm start -- calibration  # 查看自我判断的现实对账记录
 npm start -- learning     # 查看累计探索事实、最近折返和当前目标
 npm start -- settings     # 查看配置来源和实际设定值，不创建或修改存档
 npm start -- step 20      # 规则驱动推进 20 次，不调用模型
@@ -30,11 +33,49 @@ npm run evaluate:learning # 在 newborn.sqlite 副本对照新旧输入，并严
 
 | 环境变量 | 默认值 | 作用 |
 |---|---|---|
-| `DEER_LIVE_MODEL` | `deepseek-r1:1.5b` | 切换本机已下载模型 |
-| `DEER_LIVE_TIMEOUT_MS` | `30000` | 单次推理超时毫秒数 |
+| `DEER_LIVE_MODEL` | 配置里的 `model.name` | 临时覆盖模型名，不改变 provider/baseUrl；不建议长期使用 |
+| `DEER_LIVE_TIMEOUT_MS` | 配置里的 `model.timeoutMs` | 单次推理超时毫秒数 |
 | `DEER_LIVE_STRICT` | 未设置 | 设置为 `1` 时，推理失败直接停止，不使用规则接管 |
 | `DEER_LIVE_DB` | `data/deer-live.sqlite` | 指定世界存档 |
+| `DEER_LIVE_EXPERIENCE` | 配置里的 `memory.experience.enabled` | 设置为 `0` 关闭经验记录与线索注入，`1` 开启 |
+| `DEER_LIVE_EXPERIENCE_PATH` | `data/experience.json` | 指定经验库文件路径 |
+| `DEER_LIVE_THINKING` | 配置里的 `thinking.enabled` | 设置为 `0` 关闭思考复核，`1` 开启 |
+| `DEER_LIVE_THINKING_PATH` | `data/thinking.json` | 指定思考库文件路径 |
+| `DEER_LIVE_CALIBRATION` | 配置里的 `calibration.enabled` | 设置为 `0` 关闭现实对账，`1` 开启 |
+| `DEER_LIVE_CALIBRATION_PATH` | `data/calibration.json` | 指定校准库文件路径 |
 | `DEER_LIVE_CONFIG` | `deerlive.config.json` | 选择另一份运行配置文件 |
+
+## 模型服务
+
+模型只在一个地方配置：[deerlive.config.json](deerlive.config.json) 的 `model` 段。`provider` 决定协议：
+
+| provider | 请求 | 必需字段 |
+|---|---|---|
+| `ollama` | `POST /api/chat` | `name` 必须是本机已下载模型 |
+| `openai-compatible` | `POST /chat/completions` | `name`、`baseUrl`、`apiKey` |
+
+Step Plan 通道示例（订阅额度，OpenAI 协议）：
+
+```json
+"model": {
+  "provider": "openai-compatible",
+  "name": "step-5-preview",
+  "baseUrl": "https://api.stepfun.com/step_plan/v1",
+  "apiKey": "",
+  "timeoutMs": 120000,
+  "numPredict": 2048,
+  "temperature": 0.6,
+  "topP": 0.95,
+  "reasoningEffort": ""
+}
+```
+
+- `baseUrl` 的路径会保留，请求发往 `${baseUrl}/chat/completions`；不要在末尾再写 `/chat/completions`。
+- `apiKey` 留空时，`live`、`run` 和实验会在发请求前明确报错，不会静默退回规则模式。填入后即可运行，不需要设置环境变量。
+- `numPredict` 映射为云服务的 `max_tokens`；思考内容也占用这一额度，推理模型建议留足余量。
+- `numCtx` 和 `seed` 只对 Ollama 生效；OpenAI 兼容协议不发送这两个字段，云端采样不由种子控制。
+- `reasoningEffort`（`low` / `medium` / `high` / 留空）只对支持推理强度的云模型发送。
+- 配置里的 `apiKey` 是本机明文。`deerlive.config.json` 受 Git 跟踪，**不要把真实 Key 提交到远程仓库**；提交前请清空，或仅在本地保存。
 
 ## 世界、角色和运行设定
 
@@ -42,7 +83,7 @@ npm run evaluate:learning # 在 newborn.sqlite 副本对照新旧输入，并严
 |---|---|---|
 | [config/world.json](config/world.json) | 地图大小、地点、食物初始库存及容量、资源恢复周期 | 地图及初始库存用于新存档；恢复周期在下次运行生效 |
 | [config/deer.json](config/deer.json) | 新生小鹿的身份、描述、动机，以及初始位置和身体状态 | 身份与动机从下次决策使用；初始名字、位置和数值仅用于新存档 |
-| [deerlive.config.json](deerlive.config.json) | 两份配置的路径、身体规则、记忆数量、模型参数、运行及存档位置 | 下次启动读取；环境变量优先覆盖同名运行设置 |
+| [deerlive.config.json](deerlive.config.json) | 两份配置的路径、身体规则、记忆数量、模型服务、运行及存档位置 | 下次启动读取；环境变量可临时覆盖同名运行设置 |
 
 角色默认设为 `species: deer`、`lifeStage: newborn`，初始食物为 **0 份**。它具有寻找食物与休息的基本本能，具体地点和行动结果通过经历积累。目前没有自动年龄增长、受伤或死亡机制；“养活自己”是其行动目标。
 
@@ -61,6 +102,18 @@ npm run evaluate:learning # 在 newborn.sqlite 副本对照新旧输入，并严
 | `life.visionRadius` | 1 | 能观察到周围多远 |
 | 世界配置的 `foodRegrowEveryTicks` | 60 | 每隔多少个模拟 tick 恢复一份资源 |
 | `memory.maxRecall` / `maxExperiences` | 6 / 4 | 最多提供多少条地点记忆和行动经历 |
+| `memory.experience.enabled` | `true` | 是否记录经验事实并在决策前注入经验线索 |
+| `memory.experience.path` | `data/experience.json` | 经验库文件，跨重启、跨存档保留 |
+| `memory.experience.maxPatterns` / `maxPerAction` | 8 / 1 | 每次注入的线索总数上限 / 每个候选动作取回上限 |
+| `memory.experience.minObservations` | 1 | 模式至少被观察到多少次才会被取回 |
+| `thinking.enabled` | `true` | 是否定期复核自我判断并把判断注入决策提示 |
+| `thinking.path` | `data/thinking.json` | 思考库文件，跨重启保留模型写下的判断 |
+| `thinking.everyTicks` | 10 | 每隔多少步做一次思考复核 |
+| `thinking.maxBeliefsInPrompt` | 5 | 每次决策最多携带多少条自我信念 |
+| `calibration.enabled` | `true` | 是否对带 claim 的自我判断做现实对账 |
+| `calibration.path` | `data/calibration.json` | 校准库文件，跨重启保留言行记录 |
+
+死亡与季节性食物（`foodCycle`、饥饿顶格耗体力、体力归零终局）已进入世界规则：旧存档自动补满体力，规则反射鹿在默认世界约 240 步饿死——想活多久，取决于心智。
 
 阈值由规则模式采用，并提供给模型参考；不保证模型始终作出合理选择。配置只需填写要覆盖的字段，省略的字段使用内置默认值；地点数组整体替换。文件引用路径相对运行配置文件解析，存档路径相对当前工作目录解析。未知字段、越界位置或无效数值会报错，不会重置现有存档。
 
@@ -82,9 +135,9 @@ DEER_LIVE_DB=data/newborn.sqlite npm start -- live 6
 - 程序仅为记忆中尚有食物的地点提供第一步方向提示；模型决定是否采用。控制台中的“模型选择”是动作说明，不是模型的思考过程；“已提供记忆”也不代表模型实际利用了它。
 - 状态与事件在同一 SQLite 事务内保存；过期写入被拒绝，防止两个实例覆盖同一存档。
 
-模型异常时，默认使用基础规则维持活动，日志和事件标为 `fallback` 并记录错误；模型执行标为 `ollama`，主动规则模式标为 `rule`。严格模式可用于检验模型自身的表现。提供经历代表信息已进入模型上下文，不等于已验证它学会世界规则，也不表示在训练模型权重。
+模型异常时，默认使用基础规则维持活动，日志和事件标为 `fallback` 并记录错误；模型执行标为 `ollama`（历史命名，表示“由模型决定”，与使用哪种协议无关），主动规则模式标为 `rule`。严格模式可用于检验模型自身的表现。提供经历代表信息已进入模型上下文，不等于已验证它学会世界规则，也不表示在训练模型权重。
 
-当前 R1 接入采用单一用户提示、temperature 0.6、top_p 0.95、4096 上下文和最多 1024 个生成 token；提示及采样参考 [DeepSeek 官方用法建议](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B#usage-recommendations)。小模型输出动作 JSON；没有现存探索目标时，另输出目标坐标或 `none`，不要求生成理由。
+采样参数统一从配置读取：Ollama 发送 temperature、top_p、num_predict、num_ctx 和 seed；OpenAI 兼容服务发送 temperature、top_p、max_tokens，`numCtx`、`seed` 不发送。提示与采样最初参考 [DeepSeek 官方用法建议](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B#usage-recommendations)，现在不再绑定具体模型。模型输出动作 JSON；没有现存探索目标时，另输出目标坐标或 `none`，不要求生成理由。
 
 ## 累计经历与持续目标（v0.4）
 
@@ -127,7 +180,7 @@ deer-live/
 ├── src/
 │   ├── app/              # CLI 入口与生命循环调度
 │   ├── world/            # 世界、身体和资源规则
-│   ├── agent/            # 模型决策、经历类型与持续目标
+│   ├── agent/            # 模型协议适配、决策、经历类型与持续目标
 │   ├── storage/          # SQLite 存档与历史检索
 │   ├── config/           # 配置加载与校验
 │   └── web/              # 本机网页服务与运行控制
@@ -152,3 +205,7 @@ deer-live/
 
 
 v0.5 新增本机 2D 界面、参考形象生成的卡通小鹿、真实状态和日记、单步/连续运行/暂停取消；仍复用原有世界与模型循环。30 项自动化测试通过，新增网页状态读取、来源边界、暂停取消、并发限制和严格模式/规则接管检查。支持桌面与窄屏，模型成长与训练仍未实现。
+
+## 后续旁路实验
+
+2026 年 11 月 13–16 日增加了不进入正式生命循环的留白、身体/世界分离和经验复用探针，代码位于 `src/life/`、`src/experience/`、`worlds/` 和 `scripts/experiments/`。这些实验尚未实现持续自我系统，也未改变上述 v0.5 行为。经验记录、聚合、检索与持久化已抽成独立模块 [src/experience/](src/experience/README.md)，目前不调用模型，也尚未接入正式循环。阶段结果、限制和归档证据见 [自我系统实验进度](docs/research/自我系统实验进度-20261116.md)，实验配置与命令见 [脚本说明](scripts/README.md)。

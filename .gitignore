@@ -23,3 +23,6 @@ __pycache__/
 !.env.example
 .DS_Store
 *.log
+
+# Local runtime config contains the model API key — never commit
+deerlive.config.json

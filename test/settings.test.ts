@@ -53,6 +53,11 @@ test('错误设定被拒绝；环境变量优先且不会改变内置默认值',
     write(join(f.dir, 'runtime.json'), { worldFile: 'world.json', characterFile: 'deer.json' });
     write(join(f.dir, 'world.json'), { ...f.world, places: [...f.world.places, f.world.places[0]] });
     assert.throws(f.load, /坐标重复/);
+    // 地点允许独立再生节奏；非法值被拒绝
+    write(join(f.dir, 'world.json'), { ...f.world, places: [{ ...f.world.places[0], foodRegrowEveryTicks: 0 }] });
+    assert.equal(f.load().world.places[0].foodRegrowEveryTicks, 0);
+    write(join(f.dir, 'world.json'), { ...f.world, places: [{ ...f.world.places[0], foodRegrowEveryTicks: -1 }] });
+    assert.throws(f.load, /foodRegrowEveryTicks/);
     assert.throws(() => loadSettings({ DEER_LIVE_CONFIG: 'missing.json' }, f.dir), /无法读取/);
   } finally { rmSync(f.dir, { recursive: true, force: true }); }
 });
@@ -105,4 +110,54 @@ test('模型接收新生小鹿身份、当前阈值和真实行动经历；采�
     const contextWithoutHistory = JSON.parse(decisionRequest(initialWorld(), []).messages[0].content);
     assert.deepEqual(contextWithoutHistory.experiences, []);
   } finally { store.close(); }
+});
+
+test('模型服务设置：协议、地址与密钥校验', () => {
+  const f = fixture();
+  try {
+    const withModel = (model: unknown) => write(join(f.dir, 'runtime.json'), { ...f.runtime, model });
+    withModel({ provider: 'openai-compatible', name: 'step-5-preview', baseUrl: 'https://api.stepfun.com/step_plan/v1', apiKey: '' });
+    assert.equal(f.load().model.provider, 'openai-compatible');
+    assert.equal(f.load().model.baseUrl, 'https://api.stepfun.com/step_plan/v1');
+    withModel({ provider: 'cloud' });
+    assert.throws(f.load, /provider/);
+    withModel({ provider: 'ollama', baseUrl: 'https://example.com' });
+    assert.throws(f.load, /本机/);
+    withModel({ baseUrl: 'ftp://example.com' });
+    assert.throws(f.load, /http/);
+    withModel({ apiKey: 'a\nb' });
+    assert.throws(f.load, /apiKey/);
+    withModel({ reasoningEffort: 'max' });
+    assert.throws(f.load, /reasoningEffort/);
+  } finally { rmSync(f.dir, { recursive: true, force: true }); }
+});
+
+test('经验系统设定：默认开启、校验与环境变量覆盖', () => {
+  const f = fixture();
+  try {
+    // 未配置时使用默认值：开启，路径 data/experience.json
+    const defaults = f.load();
+    assert.equal(defaults.memory.experience.enabled, true);
+    assert.equal(defaults.memory.experience.path, 'data/experience.json');
+    assert.equal(defaults.memory.experience.maxPatterns, 8);
+    assert.equal(defaults.memory.experience.maxPerAction, 1);
+    const withExperience = (experience: unknown) => write(join(f.dir, 'runtime.json'), { ...f.runtime, memory: { experience } });
+    withExperience({ enabled: 'yes' });
+    assert.throws(f.load, /experience\.enabled/);
+    withExperience({ path: '' });
+    assert.throws(f.load, /experience\.path/);
+    withExperience({ maxPatterns: 21 });
+    assert.throws(f.load, /maxPatterns/);
+    withExperience({ maxPerAction: 6 });
+    assert.throws(f.load, /maxPerAction/);
+    withExperience({ minObservations: 0 });
+    assert.throws(f.load, /minObservations/);
+    // 环境变量优先，且不污染默认值
+    write(join(f.dir, 'runtime.json'), f.runtime);
+    const env = loadSettings({ DEER_LIVE_CONFIG: 'runtime.json', DEER_LIVE_EXPERIENCE: '0', DEER_LIVE_EXPERIENCE_PATH: 'custom/experience.json' }, f.dir);
+    assert.equal(env.settings.memory.experience.enabled, false);
+    assert.equal(env.settings.memory.experience.path, 'custom/experience.json');
+    assert.equal(DEFAULT_SETTINGS.memory.experience.enabled, true);
+    assert.throws(() => loadSettings({ DEER_LIVE_CONFIG: 'runtime.json', DEER_LIVE_EXPERIENCE: '2' }, f.dir), /DEER_LIVE_EXPERIENCE/);
+  } finally { rmSync(f.dir, { recursive: true, force: true }); }
 });

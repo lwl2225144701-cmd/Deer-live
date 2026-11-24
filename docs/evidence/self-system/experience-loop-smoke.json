@@ -1,0 +1,32 @@
+{
+  "title": "经验系统接入正式循环：接线冒烟验证",
+  "date": "2026-11-17",
+  "model": "step-5-preview（openai-compatible，StepFun Step Plan）",
+  "purpose": "验证经验库在正式 tick 循环中确实被写入、被检索并注入提示词，重启后仍可加载；不是行为对照实验。",
+  "setup": {
+    "archive": "data/experiments/experience-loop/smoke.sqlite（全新临时存档）",
+    "experienceFile": "data/experiments/experience-loop/experience.json（DEER_LIVE_EXPERIENCE_PATH 指定）",
+    "command": "npm start -- live 6",
+    "note": "正式存档 data/deer-live.sqlite 未被触碰"
+  },
+  "ticks": [
+    { "tick": 1, "action": "move", "hints": 0, "latencyMs": 3333 },
+    { "tick": 2, "action": "move", "hints": 1, "latencyMs": 7604 },
+    { "tick": 3, "action": "move", "hints": 0, "latencyMs": 6443 },
+    { "tick": 4, "action": "move", "hints": 1, "latencyMs": 5141 },
+    { "tick": 5, "action": "move", "hints": 3, "latencyMs": 3526 },
+    { "tick": 6, "action": "move", "hints": 3, "latencyMs": 14182 }
+  ],
+  "afterRun": {
+    "facts": 6,
+    "patterns": 5,
+    "retrievalExample": "在草地，可以移动、饥饿 25–49、精力 50–74 时，move:west：观察到 2 次（饥饿+2，精力-3，食物0，之后可以移动）",
+    "byActionFiltering": "move:east → 82 | move:west → 114",
+    "restartLoad": "新进程执行 npm start -- patterns，事实/模式计数一致，检索按当前情境匹配"
+  },
+  "caveats": [
+    "前三步检索结果稀疏属于预期：事实需要先积累，且线索只注入到模型决策，不影响规则接管路径",
+    "本验证只证明接线成立，不证明经验改善行为",
+    "ticks 中的 hints 数量随候选动作与既有事实匹配数变化，不是固定注入量"
+  ]
+}

@@ -4,6 +4,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { Store } from '../src/storage/store.ts';
+import { DEFAULT_SETTINGS } from '../src/config/settings.ts';
 import { step, advance } from '../src/world/world.ts';
 import { DatabaseSync } from 'node:sqlite';
 
@@ -84,7 +85,8 @@ test('旧版存档迁移保留生命属性和时间，并可继续保存', () =>
     const loaded = store.load()!;
     assert.equal(loaded.version, 2);
     assert.equal(loaded.tick, old.tick);
-    assert.deepEqual(loaded.agent, old.agent);
+    // 旧存档没有 health：迁移时补满体力
+    assert.deepEqual(loaded.agent, { ...old.agent, health: 100 });
     const next = step(loaded); store.save(next.world, next.event);
     assert.equal(store.load()?.tick, 43); store.close();
   } finally { rmSync(dir, { recursive: true, force: true }); }
@@ -95,7 +97,7 @@ test('很久以前的地点发现仍可检索，普通行动不会挤掉长期�
   try {
     let world = store.initialize();
     for (const action of [{ type: 'explore' as const }, ...Array.from({ length: 1100 }, () => ({ type: 'rest' as const }))]) {
-      const next = advance(world, action, 'test'); store.save(next.world, next.event); world = next.world;
+      const next = advance(world, action, 'test', { ...DEFAULT_SETTINGS.life, hungerPerTick: 0 }); store.save(next.world, next.event); world = next.world;
     }
     assert.equal(store.recall(world)[0].id, 'event:1');
   } finally { store.close(); }

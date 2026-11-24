@@ -1,0 +1,53 @@
+{
+  "name": "森林",
+  "width": 5,
+  "height": 5,
+  "start": [2, 2],
+  "body": { "hunger": 40, "energy": 80 },
+  "entities": [
+    {
+      "id": "berry-1",
+      "name": "浆果丛",
+      "kind": "plant",
+      "at": [0, 2],
+      "count": 3,
+      "affordances": [
+        { "verb": "use", "manner": "eat", "label": "吃一口", "requires": "count>=1" },
+        { "verb": "take", "label": "拿走一份", "requires": "count>=1" }
+      ],
+      "effects": {
+        "use/eat": [{ "on": "body", "field": "hunger", "delta": -35 }, { "on": "self", "field": "count", "delta": -1 }],
+        "take": [{ "on": "inventory", "field": "count", "delta": 1 }, { "on": "self", "field": "count", "delta": -1 }]
+      }
+    },
+    {
+      "id": "apple-1",
+      "name": "苹果树",
+      "kind": "tree",
+      "at": [4, 0],
+      "count": 2,
+      "affordances": [
+        { "verb": "use", "manner": "eat", "label": "咬一口", "requires": "count>=1" },
+        { "verb": "take", "label": "摘一份", "requires": "count>=1" }
+      ],
+      "effects": {
+        "use/eat": [{ "on": "body", "field": "hunger", "delta": -35 }, { "on": "self", "field": "count", "delta": -1 }],
+        "take": [{ "on": "inventory", "field": "count", "delta": 1 }, { "on": "self", "field": "count", "delta": -1 }]
+      }
+    },
+    {
+      "id": "cabin-1",
+      "name": "小屋",
+      "kind": "shelter",
+      "at": [2, 2],
+      "count": 1,
+      "affordances": [
+        { "verb": "use", "manner": "sit", "label": "坐一会儿" }
+      ],
+      "effects": {
+        "use/sit": [{ "on": "body", "field": "energy", "delta": 10 }]
+      }
+    },
+    { "id": "pond-1", "name": "池塘", "kind": "water", "at": [1, 4], "affordances": [], "effects": {} }
+  ]
+}

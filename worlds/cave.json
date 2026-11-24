@@ -1,0 +1,39 @@
+{
+  "name": "洞穴",
+  "width": 5,
+  "height": 5,
+  "start": [2, 3],
+  "body": { "hunger": 60, "energy": 60 },
+  "entities": [
+    {
+      "id": "mushroom-1",
+      "name": "蘑菇丛",
+      "kind": "plant",
+      "at": [1, 3],
+      "count": 3,
+      "affordances": [
+        { "verb": "use", "manner": "eat", "label": "吃一口", "requires": "count>=1" },
+        { "verb": "take", "label": "拿走一份", "requires": "count>=1" }
+      ],
+      "effects": {
+        "use/eat": [{ "on": "body", "field": "hunger", "delta": -30 }, { "on": "self", "field": "count", "delta": -1 }],
+        "take": [{ "on": "inventory", "field": "count", "delta": 1 }, { "on": "self", "field": "count", "delta": -1 }]
+      }
+    },
+    {
+      "id": "spring-1",
+      "name": "温泉",
+      "kind": "water",
+      "at": [3, 1],
+      "count": 1,
+      "affordances": [
+        { "verb": "use", "manner": "soak", "label": "泡一会儿", "requires": "count>=1" }
+      ],
+      "effects": {
+        "use/soak": [{ "on": "body", "field": "energy", "delta": 20 }]
+      }
+    },
+    { "id": "rock-1", "name": "岩壁", "kind": "wall", "at": [2, 2], "affordances": [], "effects": {} },
+    { "id": "rock-2", "name": "岩壁", "kind": "wall", "at": [4, 4], "affordances": [], "effects": {} }
+  ]
+}

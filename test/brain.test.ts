@@ -67,6 +67,29 @@ test('请求超时会中止等待', async () => {
   await assert.rejects(() => new OllamaBrain({ timeoutMs: 10, fetcher }).decide(initialWorld(), []), { name: 'TimeoutError' });
 });
 
+test('偶发推理失败自动重试一次；中止信号不做重试', async () => {
+  const world = initialWorld();
+  let calls = 0;
+  const flaky = (async () => {
+    calls += 1;
+    if (calls === 1) return new Response(JSON.stringify({ done: false, error: '偶发错误' }), { status: 500 });
+    return new Response(JSON.stringify({ done: true, done_reason: 'stop', message: { content: JSON.stringify({ choice: 'explore' }) } }));
+  }) as typeof fetch;
+  const decision = await new OllamaBrain({ fetcher: flaky, timeoutMs: 5000 }).decide(world, []);
+  assert.equal(calls, 2);
+  assert.equal(decision.choice, 'explore');
+  // 两次都失败才交给上层
+  let attempts = 0;
+  const alwaysFails = (async () => { attempts += 1; return new Response('{"error":"服务不可用"}', { status: 503 }); }) as typeof fetch;
+  await assert.rejects(() => new OllamaBrain({ fetcher: alwaysFails, timeoutMs: 5000 }).decide(world, []), /服务不可用/);
+  assert.equal(attempts, 2);
+  // 已中止的请求不重试
+  let abortedCalls = 0;
+  const aborting = (async () => { abortedCalls += 1; throw new Error('stopped'); }) as typeof fetch;
+  await assert.rejects(() => new OllamaBrain({ fetcher: aborting, timeoutMs: 5000 }).decide(world, [], AbortSignal.abort()));
+  assert.equal(abortedCalls, 1);
+});
+
 test('推理失败明确接管；严格模式与停止信号不写入新状态', async () => {
   const store = new Store(':memory:'); store.initialize();
   const brain = new OllamaBrain({ fetcher: response({}, { error: '模型不可用' }) });
@@ -91,4 +114,18 @@ test('模型动作和决策记录原子保存', async () => {
     assert.deepEqual(store.recentEvents()[0], result.event);
     assert.equal(store.recall(result.world)[0].place, '小屋');
   } finally { store.close(); }
+});
+
+test('经验线索进入提示词；未提供时不出现该字段', async () => {
+  const world = initialWorld();
+  const without = JSON.parse(decisionRequest(world, []).messages[0].content);
+  assert.equal(without.experienceHints, undefined);
+  const hints = [
+    { action: 'explore', text: '在小屋，可以移动、饥饿 50–74、精力 50–74 时，explore：观察到 2 次（饥饿+2，精力-5，食物+0，之后可以移动）' },
+    { action: 'rest', text: '在小屋，可以移动、饥饿 50–74、精力 50–74 时，rest：观察到 1 次（饥饿+2，精力+15，食物+0，之后可以移动）' },
+  ];
+  const payload = JSON.parse(decisionRequest(world, [], { experienceHints: hints }).messages[0].content);
+  assert.deepEqual(payload.experienceHints, hints);
+  assert.match(payload.task, /experienceHints/);
+  assert.match(payload.task, /不限制你的选择/);
 });

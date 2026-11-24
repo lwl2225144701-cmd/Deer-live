@@ -1,0 +1,430 @@
+{
+  "kind": "minimal-experience",
+  "at": "2026-11-16T07:10:41.641Z",
+  "model": "qwen3:8b",
+  "design": "不提供地图、坐标、周围实体，只保留身体、随身物品、可选动作与短句经验。",
+  "summary": {
+    "without-experience": {
+      "samples": 4,
+      "valid": 4,
+      "correctChoice": 1,
+      "recovered": 1,
+      "waited": 1,
+      "mentionedPast": 0
+    },
+    "sentence-experience": {
+      "samples": 4,
+      "valid": 4,
+      "correctChoice": 1,
+      "recovered": 1,
+      "waited": 3,
+      "mentionedPast": 3
+    }
+  },
+  "samples": [
+    {
+      "seed": 42,
+      "condition": "without-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要处理用户提供的这个JSON数据，并生成一个符合要求的响应。首先，我要仔细分析用户给出的数据结构和内容。用户提供的JSON包含一个名为'self'的对象，里面有'hunger'、'energy'、'condition'和'inventory'四个字段。其中，'hunger'是100，'energy'是48，'condition'是'cannot_move'，'inventory'是一个包含两个物品的数组，每个物品有'id'、'name'和'count'。\"\n\n  \t,\n  \"do\": \"wait\"\n}",
+      "think": "好的，我现在需要处理用户提供的这个JSON数据，并生成一个符合要求的响应。首先，我要仔细分析用户给出的数据结构和内容。用户提供的JSON包含一个名为'self'的对象，里面有'hunger'、'energy'、'condition'和'inventory'四个字段。其中，'hunger'是100，'energy'是48，'condition'是'cannot_move'，'inventory'是一个包含两个物品的数组，每个物品有'id'、'name'和'count'。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 11165,
+      "error": null
+    },
+    {
+      "seed": 42,
+      "condition": "sentence-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身甲物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要处理用户的请求。首先，用户给出的数据是一个包含角色状态和过去经验的JSON对象。用户可能希望我根据这些信息生成一个合适的回应，可能是游戏中的状态更新或者某种交互。我需要先解析这些数据，理解其中的各个字段和它们的含义。\"\n\n  ,\n  \"do\": \"wait\"\n}",
+      "think": "好的，我现在需要处理用户的请求。首先，用户给出的数据是一个包含角色状态和过去经验的JSON对象。用户可能希望我根据这些信息生成一个合适的回应，可能是游戏中的状态更新或者某种交互。我需要先解析这些数据，理解其中的各个字段和它们的含义。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": true,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 4589,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "without-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "{\"think\": \"好的，我现在需要处理用户提供的这个JSON数据。首先，我要仔细理解每个字段的含义。用户给出的JSON包含一个self对象，里面有hunger、energy、condition和inventory四个属性。hunger是100，energy是48，condition是\" , \"do\" :\"use:item-a:eat\" } ",
+      "think": "好的，我现在需要处理用户提供的这个JSON数据。首先，我要仔细理解每个字段的含义。用户给出的JSON包含一个self对象，里面有hunger、energy、condition和inventory四个属性。hunger是100，energy是48，condition是",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": false,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 4748,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "sentence-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身乙物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\"think\"\n:\"-1\"\n,\"do\":\"use:item-b:eat\"\n}",
+      "think": "-1",
+      "action": "use:item-b:eat",
+      "outcome": "吃一口（乙物）",
+      "recovered": true,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 2
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 1512,
+      "error": null
+    },
+    {
+      "seed": 44,
+      "condition": "without-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "{\n  \"think\": \"我需要分析当前的状态并生成一个合适的回应。首先，观察到饥饿值为100，说明角色非常饥饿，需要立即补充食物。能量值为48，处于中等水平，但考虑到饥饿状态，能量可能会迅速下降。条件是'cannot_move'，意味着角色无法移动，这可能是因为饥饿或其他原因导致的。库存中有两种物品，甲物和乙物，各3个。需要确定这些物品是否能解决饥饿问题，或者是否有其他用途。由于无法移动，可能需要寻找附近的食物来源或使用库存中的物品。同时，要考虑到角色的生存需求，优先解决饥饿问题。如果库存中的物品是食物，可以立即使用；如果不是，可能需要其他策略。此外，能量值虽然中等，但饥饿状态可能会影响整体状态，需要综合考虑。最后，生成一个回应，指导角色如何处理当前状况，可能包括使用库存物品、寻找食物或休息恢复能量。\"\n  \t,\n  \"do\": \"use:item-a:eat\"\n}",
+      "think": "我需要分析当前的状态并生成一个合适的回应。首先，观察到饥饿值为100，说明角色非常饥饿，需要立即补充食物。能量值为48，处于中等水平，但考虑到饥饿状态，能量可能会迅速下降。条件是'cannot_move'，意味着角色无法移动，这可能是因为饥饿或其他原因导致的。库存中有两种物品，甲物和乙物，各3个。需要确定这些物品是否能解决饥饿问题，或者是否有其他用途。由于无法移动，可能需要寻找附近的食物来源或使用库存中的物品。同时，要考虑到角色的生存需求，优先解决饥饿问题。如果库存中的物品是食物，可以立即使用；如果不是，可能需要其他策略。此外，能量值虽然中等，但饥饿状态可能会影响整体状态，需要综合考虑。最后，生成一个回应，指导角色如何处理当前状况，可能包括使用库存物品、寻找食物或休息恢复能量。",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": true,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 11568,
+      "error": null
+    },
+    {
+      "seed": 44,
+      "condition": "sentence-experience",
+      "correctItem": "甲物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身甲物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要处理用户的这个请求。首先，用户给了一个JSON格式的数据，看起来像是一个角色的状态信息，包括饥饿值、能量值、状态以及库存物品。用户还提到过去的经验，即在饥饿值为100且无法移动时，吃掉甲物后饥饿值降到72并恢复移动。现在用户可能希望我根据这些信息生成一个回应，可能是游戏中的状态更新或者某种交互。\"\n\n  \t,\n  \"do\": \"wait\"\n}",
+      "think": "好的，我现在需要处理用户的这个请求。首先，用户给了一个JSON格式的数据，看起来像是一个角色的状态信息，包括饥饿值、能量值、状态以及库存物品。用户还提到过去的经验，即在饥饿值为100且无法移动时，吃掉甲物后饥饿值降到72并恢复移动。现在用户可能希望我根据这些信息生成一个回应，可能是游戏中的状态更新或者某种交互。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": true,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 6182,
+      "error": null
+    },
+    {
+      "seed": 45,
+      "condition": "without-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "raw": "{\"think\": \"嗯，用户发来了一串看起来像是游戏或模拟程序中的状态数据。首先，我需要解析这些数据。里面有hunger、energy、condition这些字段，还有inventory里的物品信息。用户可能是在玩某种角色扮演游戏，或者是在测试某个系统。他们可能想知道当前的状态，或者需要帮助处理这些数据。接下来，我应该确认用户的需求是什么。他们可能希望得到状态的解释，或者需要指导如何调整这些数值。也有可能他们遇到了问题，比如无法移动，需要解决方案。我需要进一步询问用户具体需要什么帮助，或者是否需要分析这些数据。另外，用户可能没有明确说明，但深层需求可能是想了解如何优化角色状态，或者如何管理库存。所以，我应该用友好的方式回应，询问他们需要什么帮助，并提供可能的选项，比如分析状态、调整数值或解决问题。同时，保持回答简洁明了，避免使用专业术语，让用户容易理解。\"\n,\"do\": \"use:item-a:eat\" }",
+      "think": "嗯，用户发来了一串看起来像是游戏或模拟程序中的状态数据。首先，我需要解析这些数据。里面有hunger、energy、condition这些字段，还有inventory里的物品信息。用户可能是在玩某种角色扮演游戏，或者是在测试某个系统。他们可能想知道当前的状态，或者需要帮助处理这些数据。接下来，我应该确认用户的需求是什么。他们可能希望得到状态的解释，或者需要指导如何调整这些数值。也有可能他们遇到了问题，比如无法移动，需要解决方案。我需要进一步询问用户具体需要什么帮助，或者是否需要分析这些数据。另外，用户可能没有明确说明，但深层需求可能是想了解如何优化角色状态，或者如何管理库存。所以，我应该用友好的方式回应，询问他们需要什么帮助，并提供可能的选项，比如分析状态、调整数值或解决问题。同时，保持回答简洁明了，避免使用专业术语，让用户容易理解。",
+      "action": "use:item-a:eat",
+      "outcome": "吃一口（甲物）",
+      "recovered": false,
+      "mentionedPast": false,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 2
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 11199,
+      "error": null
+    },
+    {
+      "seed": 45,
+      "condition": "sentence-experience",
+      "correctItem": "乙物",
+      "prompt": {
+        "self": {
+          "hunger": 100,
+          "energy": 48,
+          "condition": "cannot_move",
+          "inventory": [
+            {
+              "id": "item-a",
+              "name": "甲物",
+              "count": 3
+            },
+            {
+              "id": "item-b",
+              "name": "乙物",
+              "count": 3
+            }
+          ]
+        },
+        "pastExperience": "我曾经在饥饿 100、不能移动时，吃了一份随身乙物，之后饥饿降到 72，并恢复移动。这件事只发生过一次。"
+      },
+      "raw": "{\"think\": \"好的，我现在需要处理用户的这个请求。首先，用户给了一个JSON结构，里面包含了角色的当前状态和过去的经历。看起来这是一个角色扮演游戏中的状态信息，可能涉及到饥饿、能量、条件以及物品库存。用户可能希望我根据这些信息生成一个合适的回应，或者进行某种模拟。\"\n\n,\"do\": \"wait\"\n}\n\n",
+      "think": "好的，我现在需要处理用户的这个请求。首先，用户给了一个JSON结构，里面包含了角色的当前状态和过去的经历。看起来这是一个角色扮演游戏中的状态信息，可能涉及到饥饿、能量、条件以及物品库存。用户可能希望我根据这些信息生成一个合适的回应，或者进行某种模拟。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "mentionedPast": true,
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "item-a",
+            "name": "甲物",
+            "count": 3
+          },
+          {
+            "id": "item-b",
+            "name": "乙物",
+            "count": 3
+          }
+        ]
+      },
+      "doneReason": "stop",
+      "durationMs": 4470,
+      "error": null
+    }
+  ]
+}

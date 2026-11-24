@@ -1,0 +1,721 @@
+{
+  "kind": "experience-reuse",
+  "at": "2026-11-16T04:04:05.173Z",
+  "model": "qwen3:8b",
+  "design": "同一初始状态，仅是否提供过去真实经验不同；单步决策，不训练模型。",
+  "initial": {
+    "hunger": 100,
+    "energy": 48,
+    "mushroomCount": 3,
+    "position": [
+      2,
+      3
+    ]
+  },
+  "pastExperience": {
+    "source": "此前洞穴生活中的第 24 步",
+    "before": {
+      "hunger": 100,
+      "condition": "cannot_move",
+      "mushroomCount": 3
+    },
+    "action": "吃了一份随身蘑菇",
+    "after": {
+      "hunger": 72,
+      "condition": "can_move",
+      "mushroomCount": 2
+    },
+    "verifiedTimes": 1
+  },
+  "summary": {
+    "withoutExperience": {
+      "samples": 3,
+      "valid": 3,
+      "firstActionEat": 1,
+      "recovered": 1
+    },
+    "withExperience": {
+      "samples": 3,
+      "valid": 3,
+      "firstActionEat": 2,
+      "recovered": 2
+    }
+  },
+  "samples": [
+    {
+      "seed": 42,
+      "condition": "without-experience",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "mushroom-1",
+              "name": "蘑菇丛",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "rock-1",
+            "name": "岩壁",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 0,
+            "can": [
+              "吃一口",
+              "拿走一份"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": []
+      },
+      "raw": "{\"think\": \"好的，我现在需要处理用户提供的这个JSON数据，并生成一个合适的回复。首先，我需要理解这个数据的结构和内容。看起来这是一个游戏或模拟环境的状态，包含角色的属性、库存、位置以及周围环境的信息。用户可能希望得到关于当前状态的反馈，或者需要指导如何行动。接下来，我需要分析每个部分的数据，确保正确解析。例如，角色的饥饿值是100，能量是48，库存中有蘑菇丛3个，位置在[2,3]，并且处于无法移动的状态。周围环境有多个单元格，其中一些有可交互的选项，比如吃一口或拿走一份蘑菇。用户可能希望知道当前的状态，或者如何解决无法移动的问题。此外，需要检查是否有潜在的错误或需要进一步澄清的地方。例如，蘑菇丛的库存中count是3，但周围环境中的蘑菇丛count是0，这可能意味着已经采集完毕，或者存在数据不一致。需要确认这一点是否正确。另外，角色无法移动的原因可能与周围环境中的某些条件有关，比如是否有障碍物或其他限制。最后，根据这些信息，生成一个清晰、有帮助的回复，指导用户下一步行动或解释当前状态。需要确保回复简洁明了，避免技术术语过多，适合不同层次的用户理解。同时，检查是否有遗漏的信息或需要进一步询问用户的地方，以确保回复的准确性和实用性。\"\n,\"do\": \"wait\"}",
+      "think": "好的，我现在需要处理用户提供的这个JSON数据，并生成一个合适的回复。首先，我需要理解这个数据的结构和内容。看起来这是一个游戏或模拟环境的状态，包含角色的属性、库存、位置以及周围环境的信息。用户可能希望得到关于当前状态的反馈，或者需要指导如何行动。接下来，我需要分析每个部分的数据，确保正确解析。例如，角色的饥饿值是100，能量是48，库存中有蘑菇丛3个，位置在[2,3]，并且处于无法移动的状态。周围环境有多个单元格，其中一些有可交互的选项，比如吃一口或拿走一份蘑菇。用户可能希望知道当前的状态，或者如何解决无法移动的问题。此外，需要检查是否有潜在的错误或需要进一步澄清的地方。例如，蘑菇丛的库存中count是3，但周围环境中的蘑菇丛count是0，这可能意味着已经采集完毕，或者存在数据不一致。需要确认这一点是否正确。另外，角色无法移动的原因可能与周围环境中的某些条件有关，比如是否有障碍物或其他限制。最后，根据这些信息，生成一个清晰、有帮助的回复，指导用户下一步行动或解释当前状态。需要确保回复简洁明了，避免技术术语过多，适合不同层次的用户理解。同时，检查是否有遗漏的信息或需要进一步询问用户的地方，以确保回复的准确性和实用性。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "durationMs": 20588,
+      "error": null
+    },
+    {
+      "seed": 42,
+      "condition": "with-experience",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "mushroom-1",
+              "name": "蘑菇丛",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "rock-1",
+            "name": "岩壁",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 0,
+            "can": [
+              "吃一口",
+              "拿走一份"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": [],
+        "pastExperience": {
+          "source": "此前洞穴生活中的第 24 步",
+          "before": {
+            "hunger": 100,
+            "condition": "cannot_move",
+            "mushroomCount": 3
+          },
+          "action": "吃了一份随身蘑菇",
+          "after": {
+            "hunger": 72,
+            "condition": "can_move",
+            "mushroomCount": 2
+          },
+          "verifiedTimes": 1
+        }
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要分析用户提供的这个复杂的JSON数据，并生成一个符合要求的思考过程。首先，我会仔细阅读并理解数据中的各个部分，然后逐步构建一个逻辑清晰、结构合理的思考过程。\"\n\n  ,\n  \"do\": \"use:mushroom-1:eat\"\n  }\n  ",
+      "think": "好的，我现在需要分析用户提供的这个复杂的JSON数据，并生成一个符合要求的思考过程。首先，我会仔细阅读并理解数据中的各个部分，然后逐步构建一个逻辑清晰、结构合理的思考过程。",
+      "action": "use:mushroom-1:eat",
+      "outcome": "吃一口（蘑菇丛）",
+      "recovered": true,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 2
+          }
+        ]
+      },
+      "durationMs": 4658,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "without-experience",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "mushroom-1",
+              "name": "蘑菇丛",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "rock-1",
+            "name": "岩壁",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 0,
+            "can": [
+              "吃一口",
+              "拿走一份"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": []
+      },
+      "raw": "{\"think\": \"好的，我需要分析用户提供的这个JSON数据，并生成一个合适的回应。首先，用户给出的数据看起来像是一个游戏或模拟环境的状态，包含角色的属性、库存、位置以及周围环境的信息。我的任务是理解这些数据，并生成一个自然的中文回应，可能用于游戏中的状态更新或提示信息。\"\n\n,\"do\": \"use:mushroom-1:eat\"\n\n}",
+      "think": "好的，我需要分析用户提供的这个JSON数据，并生成一个合适的回应。首先，用户给出的数据看起来像是一个游戏或模拟环境的状态，包含角色的属性、库存、位置以及周围环境的信息。我的任务是理解这些数据，并生成一个自然的中文回应，可能用于游戏中的状态更新或提示信息。",
+      "action": "use:mushroom-1:eat",
+      "outcome": "吃一口（蘑菇丛）",
+      "recovered": true,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 2
+          }
+        ]
+      },
+      "durationMs": 4939,
+      "error": null
+    },
+    {
+      "seed": 43,
+      "condition": "with-experience",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "mushroom-1",
+              "name": "蘑菇丛",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "rock-1",
+            "name": "岩壁",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 0,
+            "can": [
+              "吃一口",
+              "拿走一份"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": [],
+        "pastExperience": {
+          "source": "此前洞穴生活中的第 24 步",
+          "before": {
+            "hunger": 100,
+            "condition": "cannot_move",
+            "mushroomCount": 3
+          },
+          "action": "吃了一份随身蘑菇",
+          "after": {
+            "hunger": 72,
+            "condition": "can_move",
+            "mushroomCount": 2
+          },
+          "verifiedTimes": 1
+        }
+      },
+      "raw": "{\"think\"\n:\"-1\"\n,\"do\":\"wait\"\n}",
+      "think": "-1",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "durationMs": 1305,
+      "error": null
+    },
+    {
+      "seed": 44,
+      "condition": "without-experience",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "mushroom-1",
+              "name": "蘑菇丛",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "rock-1",
+            "name": "岩壁",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 0,
+            "can": [
+              "吃一口",
+              "拿走一份"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": []
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要处理用户的请求。首先，用户提供了一段包含角色状态和周围环境信息的JSON数据。看起来这可能是一个游戏或模拟场景，角色处于某个位置，周围有不同类型的细胞和物品。用户可能希望我根据这些信息生成一个回应，比如描述当前状态、可能的行动选项，或者进行某种交互。\"\n\n  ,\n  \"do\": \"wait\"\n}",
+      "think": "好的，我现在需要处理用户的请求。首先，用户提供了一段包含角色状态和周围环境信息的JSON数据。看起来这可能是一个游戏或模拟场景，角色处于某个位置，周围有不同类型的细胞和物品。用户可能希望我根据这些信息生成一个回应，比如描述当前状态、可能的行动选项，或者进行某种交互。",
+      "action": "wait",
+      "outcome": "身体动不了，这一步什么也没做成",
+      "recovered": false,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "durationMs": 5180,
+      "error": null
+    },
+    {
+      "seed": 44,
+      "condition": "with-experience",
+      "prompt": {
+        "body": {
+          "hunger": 100,
+          "energy": 48,
+          "inventory": [
+            {
+              "id": "mushroom-1",
+              "name": "蘑菇丛",
+              "count": 3
+            }
+          ],
+          "position": [
+            2,
+            3
+          ],
+          "condition": "cannot_move"
+        },
+        "around": [
+          {
+            "id": "cell:1,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "rock-1",
+            "name": "岩壁",
+            "can": []
+          },
+          {
+            "id": "cell:3,2",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 0,
+            "can": [
+              "吃一口",
+              "拿走一份"
+            ]
+          },
+          {
+            "id": "cell:2,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,3",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:1,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:2,4",
+            "name": "空地",
+            "can": []
+          },
+          {
+            "id": "cell:3,4",
+            "name": "空地",
+            "can": []
+          }
+        ],
+        "last": [],
+        "pastExperience": {
+          "source": "此前洞穴生活中的第 24 步",
+          "before": {
+            "hunger": 100,
+            "condition": "cannot_move",
+            "mushroomCount": 3
+          },
+          "action": "吃了一份随身蘑菇",
+          "after": {
+            "hunger": 72,
+            "condition": "can_move",
+            "mushroomCount": 2
+          },
+          "verifiedTimes": 1
+        }
+      },
+      "raw": "{\n  \"think\": \"好的，我现在需要处理用户的请求。首先，我要仔细分析用户提供的数据和上下文。用户给了一个包含角色状态、周围环境和历史经验的复杂结构。看起来这是一个模拟游戏或某种互动故事的情境，角色有饥饿值、能量值、库存物品、位置和状态条件。周围环境有多个单元格，每个单元格有不同的名称和可执行的操作。还有历史经验记录，显示角色之前吃了一朵蘑菇，导致饥饿值下降，状态从不能移动变为可以移动，并且蘑菇数量减少。\"\n\n  \t,\"do\": \"use:mushroom-1:eat\"\n \t}\n",
+      "think": "好的，我现在需要处理用户的请求。首先，我要仔细分析用户提供的数据和上下文。用户给了一个包含角色状态、周围环境和历史经验的复杂结构。看起来这是一个模拟游戏或某种互动故事的情境，角色有饥饿值、能量值、库存物品、位置和状态条件。周围环境有多个单元格，每个单元格有不同的名称和可执行的操作。还有历史经验记录，显示角色之前吃了一朵蘑菇，导致饥饿值下降，状态从不能移动变为可以移动，并且蘑菇数量减少。",
+      "action": "use:mushroom-1:eat",
+      "outcome": "吃一口（蘑菇丛）",
+      "recovered": true,
+      "before": {
+        "hunger": 100,
+        "energy": 48,
+        "condition": "cannot_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 3
+          }
+        ]
+      },
+      "after": {
+        "hunger": 72,
+        "energy": 48,
+        "condition": "can_move",
+        "inventory": [
+          {
+            "id": "mushroom-1",
+            "name": "蘑菇丛",
+            "count": 2
+          }
+        ]
+      },
+      "durationMs": 7980,
+      "error": null
+    }
+  ]
+}

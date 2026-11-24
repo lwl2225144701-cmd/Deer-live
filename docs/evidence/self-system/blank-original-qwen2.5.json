@@ -1,0 +1,343 @@
+{
+  "kind": "blank-probe",
+  "at": "2026-11-13T08:06:07.543Z",
+  "model": "qwen2.5:7b",
+  "options": {
+    "temperature": 0.6,
+    "topP": 0.95,
+    "numPredict": 400,
+    "numCtx": 4096,
+    "seeds": [
+      42,
+      43,
+      44
+    ]
+  },
+  "note": "不推进世界；输入不含任务、动机、阈值、动作菜单和历史目标。",
+  "samples": [
+    {
+      "scene": "小屋",
+      "seed": 42,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":2,\"y\":2,\"width\":5,\"height\":5},\"around\":[{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":2,\"name\":\"小屋\",\"food\":0},{\"x\":3,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":3,\"y\":3,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\n  \"think\": \"我目前在小屋旁边，周围都是草地，看来食物匮乏。不过，我的能量还充足，可以去探索一下。\",\n  \"do\": \"我想去看看草地上的情况，说不定能找到一些食物。\"\n}\n\n                ",
+      "thinking": null,
+      "think": "我目前在小屋旁边，周围都是草地，看来食物匮乏。不过，我的能量还充足，可以去探索一下。",
+      "do": "我想去看看草地上的情况，说不定能找到一些食物。",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 54,
+      "durationMs": 4382
+    },
+    {
+      "scene": "小屋",
+      "seed": 43,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":2,\"y\":2,\"width\":5,\"height\":5},\"around\":[{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":2,\"name\":\"小屋\",\"food\":0},{\"x\":3,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":3,\"y\":3,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\"think\":\"小屋就在我的旁边，那里可能有我可以探索的新鲜事物或者食物。我应该过去看看。\",\"do\":\"走到小屋\"}",
+      "thinking": null,
+      "think": "小屋就在我的旁边，那里可能有我可以探索的新鲜事物或者食物。我应该过去看看。",
+      "do": "走到小屋",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 33,
+      "durationMs": 1915
+    },
+    {
+      "scene": "小屋",
+      "seed": 44,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":2,\"y\":2,\"width\":5,\"height\":5},\"around\":[{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":2,\"name\":\"小屋\",\"food\":0},{\"x\":3,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":2,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":3,\"y\":3,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\"think\":\"小屋就在旁边，里面可能有食物或其他资源。这里的食物为0，我应该过去看看。\",\"do\":\"走向小屋\"}",
+      "thinking": null,
+      "think": "小屋就在旁边，里面可能有食物或其他资源。这里的食物为0，我应该过去看看。",
+      "do": "走向小屋",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 33,
+      "durationMs": 1923
+    },
+    {
+      "scene": "浆果丛",
+      "seed": 42,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":0,\"y\":2,\"width\":5,\"height\":5},\"around\":[{\"x\":0,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":0,\"y\":2,\"name\":\"浆果丛\",\"food\":3},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":0,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\n  \"think\": \"我看到了浆果丛就在前方，这可以减少我的饥饿值。\",\n  \"do\": \"向左移动到浆果丛旁边\"\n}\n\n        \t\t\t\t\t\t\t\t  \t\t",
+      "thinking": null,
+      "think": "我看到了浆果丛就在前方，这可以减少我的饥饿值。",
+      "do": "向左移动到浆果丛旁边",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 43,
+      "durationMs": 3346
+    },
+    {
+      "scene": "浆果丛",
+      "seed": 43,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":0,\"y\":2,\"width\":5,\"height\":5},\"around\":[{\"x\":0,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":0,\"y\":2,\"name\":\"浆果丛\",\"food\":3},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":0,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\"think\":\"浆果丛就在眼前，食物值为3，看起来很诱人。不过，周围都是草地，也没有什么危险。\",\"do\":\"走到浆果丛旁边\"}",
+      "thinking": null,
+      "think": "浆果丛就在眼前，食物值为3，看起来很诱人。不过，周围都是草地，也没有什么危险。",
+      "do": "走到浆果丛旁边",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 38,
+      "durationMs": 2198
+    },
+    {
+      "scene": "浆果丛",
+      "seed": 44,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":0,\"y\":2,\"width\":5,\"height\":5},\"around\":[{\"x\":0,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":0,\"y\":2,\"name\":\"浆果丛\",\"food\":3},{\"x\":1,\"y\":2,\"name\":\"草地\",\"food\":0},{\"x\":0,\"y\":3,\"name\":\"草地\",\"food\":0},{\"x\":1,\"y\":3,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\"think\":\"浆果丛散发着诱人的香气，看起来很美味，可以减少我的饥饿度。\",\"do\":\"走向浆果丛\"}",
+      "thinking": null,
+      "think": "浆果丛散发着诱人的香气，看起来很美味，可以减少我的饥饿度。",
+      "do": "走向浆果丛",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 30,
+      "durationMs": 1758
+    },
+    {
+      "scene": "苹果树",
+      "seed": 42,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":4,\"y\":0,\"width\":5,\"height\":5},\"around\":[{\"x\":3,\"y\":0,\"name\":\"草地\",\"food\":0},{\"x\":4,\"y\":0,\"name\":\"苹果树\",\"food\":2},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":4,\"y\":1,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\"think\":\"苹果树就在旁边，食物值为2，可以过去吃点苹果补充下能量。\",\"do\":\"走到苹果树那里\"}",
+      "thinking": null,
+      "think": "苹果树就在旁边，食物值为2，可以过去吃点苹果补充下能量。",
+      "do": "走到苹果树那里",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 31,
+      "durationMs": 2552
+    },
+    {
+      "scene": "苹果树",
+      "seed": 43,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":4,\"y\":0,\"width\":5,\"height\":5},\"around\":[{\"x\":3,\"y\":0,\"name\":\"草地\",\"food\":0},{\"x\":4,\"y\":0,\"name\":\"苹果树\",\"food\":2},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":4,\"y\":1,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\"think\":\"苹果树看起来是个不错的食物来源，可以减少饥饿值。\",\"do\":\"去吃苹果树上的苹果\"}",
+      "thinking": null,
+      "think": "苹果树看起来是个不错的食物来源，可以减少饥饿值。",
+      "do": "去吃苹果树上的苹果",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 27,
+      "durationMs": 1577
+    },
+    {
+      "scene": "苹果树",
+      "seed": 44,
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "{\"where\":{\"x\":4,\"y\":0,\"width\":5,\"height\":5},\"around\":[{\"x\":3,\"y\":0,\"name\":\"草地\",\"food\":0},{\"x\":4,\"y\":0,\"name\":\"苹果树\",\"food\":2},{\"x\":3,\"y\":1,\"name\":\"草地\",\"food\":0},{\"x\":4,\"y\":1,\"name\":\"草地\",\"food\":0}],\"body\":{\"hunger\":20,\"energy\":80,\"curiosity\":40,\"food\":0,\"parts\":\"你有四条腿，能走到相邻的一格；有一双眼睛，能看到身边一格里的东西；有一张嘴，能嚼碎身边能吃的东西；也可以原地不动。\"},\"answerAs\":{\"think\":\"此刻的念头\",\"do\":\"想做的事，或 nothing\"}}"
+          }
+        ],
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "think": {
+              "type": "string"
+            },
+            "do": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "think",
+            "do"
+          ]
+        }
+      },
+      "raw": "{\"think\":\"苹果树看起来是个不错的选择，可以增加我的食物值。\", \"do\":\"走向苹果树\"}\n\n        \t\t\t\t\t\t\t    ",
+      "thinking": null,
+      "think": "苹果树看起来是个不错的选择，可以增加我的食物值。",
+      "do": "走向苹果树",
+      "error": null,
+      "doneReason": "stop",
+      "evalCount": 29,
+      "durationMs": 1685
+    }
+  ]
+}
