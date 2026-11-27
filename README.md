@@ -17,6 +17,7 @@ npm start -- experiences  # 查看行动经历及前后身体状态
 npm start -- patterns     # 查看经验库统计和当前情境可检索的经验线索
 npm start -- thinking     # 查看自我判断：模型基于经历写下的信念
 npm start -- calibration  # 查看自我判断的现实对账记录
+npm start -- motivations  # 查看自我心愿：模型基于经历定下的目标和进度
 npm start -- learning     # 查看累计探索事实、最近折返和当前目标
 npm start -- settings     # 查看配置来源和实际设定值，不创建或修改存档
 npm start -- step 20      # 规则驱动推进 20 次，不调用模型
@@ -43,6 +44,8 @@ npm run evaluate:learning # 在 newborn.sqlite 副本对照新旧输入，并严
 | `DEER_LIVE_THINKING_PATH` | `data/thinking.json` | 指定思考库文件路径 |
 | `DEER_LIVE_CALIBRATION` | 配置里的 `calibration.enabled` | 设置为 `0` 关闭现实对账，`1` 开启 |
 | `DEER_LIVE_CALIBRATION_PATH` | `data/calibration.json` | 指定校准库文件路径 |
+| `DEER_LIVE_MOTIVATION` | 配置里的 `motivation.enabled` | 设置为 `0` 关闭动机系统，`1` 开启 |
+| `DEER_LIVE_MOTIVATION_PATH` | `data/motivation.json` | 指定动机库文件路径 |
 | `DEER_LIVE_CONFIG` | `deerlive.config.json` | 选择另一份运行配置文件 |
 
 ## 模型服务
@@ -111,7 +114,11 @@ Step Plan 通道示例（订阅额度，OpenAI 协议）：
 | `thinking.everyTicks` | 10 | 每隔多少步做一次思考复核 |
 | `thinking.maxBeliefsInPrompt` | 5 | 每次决策最多携带多少条自我信念 |
 | `calibration.enabled` | `true` | 是否对带 claim 的自我判断做现实对账 |
-| `calibration.path` | `data/calibration.json` | 校准库文件，跨重启保留言行记录 |
+| `calibration.path` | `data/calibration.json` | 校准库文件，跨重启保留言行记录与心愿账本 |
+| `motivation.enabled` | `true` | 是否定期让模型定下/复核自己的心愿 |
+| `motivation.path` | `data/motivation.json` | 动机库文件，跨重启保留心愿与达成历史 |
+| `motivation.everyTicks` | 15 | 每隔多少步复核一次心愿 |
+| `motivation.maxInPrompt` | 3 | 每次决策最多携带多少条心愿 |
 
 死亡与季节性食物（`foodCycle`、饥饿顶格耗体力、体力归零终局）已进入世界规则：旧存档自动补满体力，规则反射鹿在默认世界约 240 步饿死——想活多久，取决于心智。
 

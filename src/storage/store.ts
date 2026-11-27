@@ -61,6 +61,19 @@ export class Store {
     const score = (m: Memory) => (a.hunger >= hungryAt && m.foodRemaining > 0 ? 100 : 0) - Math.abs(m.x - a.x) - Math.abs(m.y - a.y) - (world.tick - m.tick) / 100;
     return latest.sort((a, b) => score(b) - score(a)).slice(0, limit);
   }
+  // 每个地点的完整观察时间线：鹿自己看见过的食物量变化。
+  // 心愿校准用它推断"此刻有没有食物""多久恢复一次"，不读世界配置。
+  placeObservations(): Record<string, { tick: number; food: number }[]> {
+    const rows = this.db.prepare(`SELECT tick, json_extract(data, '$.observation.place') AS place,
+      json_extract(data, '$.observation.foodRemaining') AS food
+      FROM events WHERE json_type(data, '$.observation') = 'object' ORDER BY tick`).all() as { tick: number; place: string; food: number }[];
+    const timeline: Record<string, { tick: number; food: number }[]> = {};
+    for (const row of rows) {
+      if (typeof row.place !== 'string' || typeof row.food !== 'number') continue;
+      (timeline[row.place] ||= []).push({ tick: row.tick, food: row.food });
+    }
+    return timeline;
+  }
   experiences(limit = DEFAULT_SETTINGS.memory.maxExperiences): Experience[] {
     // Preserve an example of each action's effect, rather than letting repeated
     // movement displace every past feeding/resting experience from context.

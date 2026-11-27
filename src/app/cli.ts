@@ -11,6 +11,7 @@ import { ExperienceStore, describePattern } from '../experience/store.ts';
 import { situationFromWorld, candidateActionIds } from '../experience/facts.ts';
 import { ThinkingStore } from '../thinking/store.ts';
 import { CalibrationStore } from '../calibration/store.ts';
+import { MotivationStore } from '../motivation/store.ts';
 
 const usage = `DeerLive 本地生命循环
 用法：npm start -- <命令>
@@ -21,6 +22,7 @@ const usage = `DeerLive 本地生命循环
   patterns      查看经验库统计和当前情境可检索的经验线索
   thinking      查看自我判断：模型基于经历写下的信念与复核状态
   calibration   查看自我判断的现实对账记录（言行是否一致）
+  motivations   查看自我心愿：模型基于经历定下的目标和现实进度
   learning      查看累计探索结果、折返和当前目标
   settings      查看生效的世界、角色、身体和模型设定
   step [次数]   使用规则推进，默认 1 次（最多 100000 次）
@@ -47,7 +49,7 @@ function positiveInteger(raw: string | undefined, fallback: number, max: number)
 async function main() {
   const [command = 'help', arg, ...extra] = process.argv.slice(2);
   if (['help', '--help', '-h'].includes(command)) { console.log(usage); return; }
-  if (!['init', 'status', 'memories', 'experiences', 'patterns', 'thinking', 'calibration', 'learning', 'settings', 'step', 'live', 'run'].includes(command) || extra.length || (['init', 'status', 'memories', 'experiences', 'patterns', 'thinking', 'calibration', 'learning', 'settings'].includes(command) && arg !== undefined)) throw new Error('未知命令或参数');
+  if (!['init', 'status', 'memories', 'experiences', 'patterns', 'thinking', 'calibration', 'motivations', 'learning', 'settings', 'step', 'live', 'run'].includes(command) || extra.length || (['init', 'status', 'memories', 'experiences', 'patterns', 'thinking', 'calibration', 'motivations', 'learning', 'settings'].includes(command) && arg !== undefined)) throw new Error('未知命令或参数');
   const loaded = loadSettings();
   const { settings } = loaded;
   if (command === 'settings') {
@@ -108,11 +110,24 @@ async function main() {
     if (command === 'calibration') {
       const calibration = CalibrationStore.load(resolve(settings.calibration.path));
       const records = calibration.records();
+      const audits = calibration.desireAudits();
       console.log(JSON.stringify({
         store: resolve(settings.calibration.path), enabled: settings.calibration.enabled,
         records: records.length,
         violated: records.filter(r => r.status === 'violated').length,
         entries: records,
+        desireAudits: audits.length,
+        desires: audits.map(a => ({ verdict: a.verdict, note: a.note, measure: a.measure })),
+      }, null, 2));
+      return;
+    }
+    if (command === 'motivations') {
+      const motivation = MotivationStore.load(resolve(settings.motivation.path));
+      console.log(JSON.stringify({
+        store: resolve(settings.motivation.path), enabled: settings.motivation.enabled,
+        active: motivation.desires('active').length, fulfilled: motivation.desires('fulfilled').length, abandoned: motivation.desires('abandoned').length,
+        desires: motivation.desires(),
+        promptPreview: motivation.selfDesires(settings.motivation.maxInPrompt),
       }, null, 2));
       return;
     }
@@ -123,13 +138,19 @@ async function main() {
     if (experience) console.log(`经验库：${resolve(settings.memory.experience.path)}（事实 ${experience.facts().length} 条，模式 ${experience.patterns().length} 个）`);
     const thinking = settings.thinking.enabled && experience ? ThinkingStore.load(resolve(settings.thinking.path)) : undefined;
     const calibration = thinking && settings.calibration.enabled ? CalibrationStore.load(resolve(settings.calibration.path)) : undefined;
+    const motivations = settings.motivation.enabled && experience ? MotivationStore.load(resolve(settings.motivation.path)) : undefined;
+    if (motivations) {
+      const active = motivations.desires('active');
+      console.log(`动机库：${resolve(settings.motivation.path)}（心愿 ${active.length} 条，每 ${settings.motivation.everyTicks} 步复核一次）`);
+      for (const desire of active.slice(0, 3)) console.log(`  · ${desire.statement}（优先级 ${desire.priority}，进度 ${desire.progress}%）`);
+    }
     if (thinking) {
       const active = thinking.beliefs('active');
       console.log(`思考库：${resolve(settings.thinking.path)}（自我判断 ${active.length} 条，每 ${settings.thinking.everyTicks} 步复核一次）`);
       for (const belief of active.slice(0, 3)) console.log(`  · ${belief.statement}`);
     }
     for (let i = 0; i < count && !controller.signal.aborted; i++) {
-      const { event, world: next } = await tick(store, { brain, strict: settings.run.strict, signal: controller.signal, settings, experience, thinking, calibration });
+      const { event, world: next } = await tick(store, { brain, strict: settings.run.strict, signal: controller.signal, settings, experience, thinking, calibration, motivation: motivations });
       if (next.dead) {
         console.log(`[${event.tick}] ${event.outcome}`);
         console.log('世界进入终局，循环结束。');
@@ -141,7 +162,7 @@ async function main() {
       if (learning.goalAfter) console.log(`  探索目标 (${learning.goalAfter.x},${learning.goalAfter.y})，模型于第 ${learning.goalAfter.selectedAt} 步选定`);
       if (learning.goalEnd) console.log(`  探索目标结束：${learning.goalEnd === 'explored' ? '已实地探索' : '连续四次移动未接近，待模型重选'}`);
       if (c.error) console.error(`  规则接管原因：${c.error}`);
-      console.log(`  饥饿 ${next.agent.hunger}/100｜精力 ${next.agent.energy}/100｜好奇心 ${next.agent.curiosity}/100｜食物 ${next.agent.food} 份${c.offeredExperienceTicks?.length ? `｜已提供 ${c.offeredExperienceTicks.length} 类行动经历` : ''}${c.offeredExperienceHints?.length ? `｜已提供经验线索 ${c.offeredExperienceHints.length} 条` : ''}${c.offeredSelfBeliefs ? `｜自我信念 ${c.offeredSelfBeliefs} 条` : ''}`);
+      console.log(`  饥饿 ${next.agent.hunger}/100｜精力 ${next.agent.energy}/100｜好奇心 ${next.agent.curiosity}/100｜食物 ${next.agent.food} 份${c.offeredExperienceTicks?.length ? `｜已提供 ${c.offeredExperienceTicks.length} 类行动经历` : ''}${c.offeredExperienceHints?.length ? `｜已提供经验线索 ${c.offeredExperienceHints.length} 条` : ''}${c.offeredSelfBeliefs ? `｜自我信念 ${c.offeredSelfBeliefs} 条` : ''}${c.offeredDesires ? `｜心愿 ${c.offeredDesires} 条` : ''}`);
       if (interval) await delay(interval, undefined, { signal: controller.signal });
     }
     console.log(JSON.stringify(store.load(), null, 2));

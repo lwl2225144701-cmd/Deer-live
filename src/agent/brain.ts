@@ -4,6 +4,7 @@ import { goalCandidates, type LearningContext } from './learning.ts';
 import { DEFAULT_SETTINGS, type LifeSettings, type CharacterSettings, type ModelSettings } from '../config/settings.ts';
 import { chat, resolveBaseUrl } from './client.ts';
 import type { ExperienceHint } from '../experience/types.ts';
+import type { SelfDesire } from '../motivation/types.ts';
 import { setTimeout as delay } from 'node:timers/promises';
 
 // 一次性推理失败（超时、偶发 5xx、输出截断）不立即交给规则接管，
@@ -11,9 +12,9 @@ import { setTimeout as delay } from 'node:timers/promises';
 const RETRY_DELAY_MS = 1000;
 
 export type Decision = { action: Action; reason: string; model: string; latencyMs: number; choice: string; goal?: { x: number; y: number } | null };
-export type Brain = { readonly model?: string; decide(world: World, memories: Memory[], signal?: AbortSignal, experiences?: Experience[], learning?: LearningContext, hints?: ExperienceHint[], beliefs?: string[]): Promise<Decision> };
+export type Brain = { readonly model?: string; decide(world: World, memories: Memory[], signal?: AbortSignal, experiences?: Experience[], learning?: LearningContext, hints?: ExperienceHint[], beliefs?: string[], desires?: SelfDesire[]): Promise<Decision> };
 
-export function compactDecisionRequest(world: World, memories: Memory[], context: { life?: LifeSettings; character?: CharacterSettings; experiences?: Experience[]; learning?: LearningContext; experienceHints?: ExperienceHint[]; selfBeliefs?: string[] } = {}) {
+export function compactDecisionRequest(world: World, memories: Memory[], context: { life?: LifeSettings; character?: CharacterSettings; experiences?: Experience[]; learning?: LearningContext; experienceHints?: ExperienceHint[]; selfBeliefs?: string[]; selfDesires?: SelfDesire[] } = {}) {
   const life = context.life || DEFAULT_SETTINGS.life;
   const character = context.character || DEFAULT_SETTINGS.character;
   const candidates = context.learning && !context.learning.goal ? goalCandidates(world, context.learning, life) : null;
@@ -46,6 +47,7 @@ export function compactDecisionRequest(world: World, memories: Memory[], context
       memories: recalled, experiences, lastExperienceInWords,
       ...(context.experienceHints?.length ? { experienceHints: context.experienceHints } : {}),
       ...(context.selfBeliefs?.length ? { selfBeliefs: context.selfBeliefs } : {}),
+      ...(context.selfDesires?.length ? { selfDesires: context.selfDesires } : {}),
       ...(context.learning ? {
         explorationFacts: context.learning.facts,
         recentMoves: context.learning.recentMoves,
@@ -65,8 +67,9 @@ export function decisionRequest(world: World, memories: Memory[], context: Param
   const payload = JSON.parse(request.messages[0].content);
   request.messages[0].content = JSON.stringify({
     identity: payload.identity,
-    task: "根据眼前观察、地点记忆和行动经历选择下一步。hunger越高越饿，energy越低越累，food是随身食物数量。以自身生存为首要目标：有基本的寻找食物和休息本能，依据身体阈值照顾需求。通过experiences里的实际身体变化和探索结果积累经验，调整下一步；不要虚构没有发生过的经历。" + (payload.selfBeliefs ? "selfBeliefs是你此前基于亲身经历写下的自我判断，像自己的经验之谈一样对待它们，可以用新的经历修正。" : "") + (payload.experienceHints ? "experienceHints是按当前身体状态、位置和候选动作从过往经历检索到的事实摘要，只描述过去的观察，不保证现在适用，也不限制你的选择。" : "") + "状态良好时尝试少去的地方。explore只检查脚下，不移动；脚下没食物且已探索过时，尝试其他地方。记忆可能过期；nextAction是前往该记忆位置的第一步。只输出动作JSON，例如{\"choice\":\"rest\"}，不要解释。",
+    task: "根据眼前观察、地点记忆和行动经历选择下一步。hunger越高越饿，energy越低越累，food是随身食物数量。" + (payload.selfDesires ? "bodySignals是身体的客观状态：hunger顶格会持续耗体力、体力归零你会死；desires是你此前基于亲身经历定下的心愿。先照顾身体还是追求心愿、按什么顺序，由你自主权衡，你对后果负责。" : "以自身生存为首要目标：有基本的寻找食物和休息本能，依据身体阈值照顾需求。") + "通过experiences里的实际身体变化和探索结果积累经验，调整下一步；不要虚构没有发生过的经历。" + (payload.selfBeliefs ? "selfBeliefs是你此前基于亲身经历写下的自我判断，像自己的经验之谈一样对待它们，可以用新的经历修正。" : "") + (payload.experienceHints ? "experienceHints是按当前身体状态、位置和候选动作从过往经历检索到的事实摘要，只描述过去的观察，不保证现在适用，也不限制你的选择。" : "") + "状态良好时尝试少去的地方。explore只检查脚下，不移动；脚下没食物且已探索过时，尝试其他地方。记忆可能过期；nextAction是前往该记忆位置的第一步。只输出动作JSON，例如{\"choice\":\"rest\"}，不要解释。",
     observation: payload.observation, memories: payload.memories, experiences: payload.experiences,
+    ...(payload.selfDesires?.length ? { selfDesires: payload.selfDesires, bodySignals: { hunger: payload.observation.self.hunger, energy: payload.observation.self.energy, food: payload.observation.self.food } } : {}),
     ...(payload.experienceHints ? { experienceHints: payload.experienceHints } : {}),
     ...(context.learning ? { learning: context.learning, learningGuide: "facts是累计实际探索结果，emptyAttempts是没采到食物的次数，不代表永远无食物；资源可能恢复。recentMoves含模型和规则来源，immediateReversals是最近六步内原路折返次数。参考代价与收获，避免反复空跑。goal是你此前选定、尚未探索的目的地；先照顾饥饿和精力，再继续前往并探索，移动到达不算完成。动作始终由你决定。若schema要求goal，从goalCandidates选择打算前往探索的坐标，或none暂不设目标。" } : {}),
     ...(payload.goalCandidates ? { goalCandidates: payload.goalCandidates } : {}),
@@ -98,9 +101,9 @@ export class ModelBrain implements Brain {
     if (!Number.isSafeInteger(this.timeoutMs) || this.timeoutMs < 1) throw new Error('模型超时必须是正整数毫秒');
     this.fetcher = options.fetcher || fetch;
   }
-  async decide(world: World, memories: Memory[], signal?: AbortSignal, experiences: Experience[] = [], learning?: LearningContext, hints: ExperienceHint[] = [], beliefs: string[] = []): Promise<Decision> {
+  async decide(world: World, memories: Memory[], signal?: AbortSignal, experiences: Experience[] = [], learning?: LearningContext, hints: ExperienceHint[] = [], beliefs: string[] = [], desires: SelfDesire[] = []): Promise<Decision> {
     const started = performance.now();
-    const request = decisionRequest(world, memories, { life: this.life, character: this.character, experiences, learning, experienceHints: hints, selfBeliefs: beliefs });
+    const request = decisionRequest(world, memories, { life: this.life, character: this.character, experiences, learning, experienceHints: hints, selfBeliefs: beliefs, selfDesires: desires });
     let lastError: unknown;
     for (let attempt = 0; attempt < 2; attempt++) {
       if (attempt > 0) await delay(RETRY_DELAY_MS, undefined, { signal });

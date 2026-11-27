@@ -137,3 +137,91 @@ test('机械提取：文本涉及单一地点且有回避/偏好语气时自动�
   calibration.update(thinking, experience, 3, { placeNames: ['雾泽', '蜜果园', '草地'] });
   assert.equal(calibration.records().find(r => r.statement.includes('雾泽'))!.status, 'violated');
 });
+
+// ── 心愿账本：动态判定 ────────────────────────────────────────────
+
+import { auditDesire, auditDesires } from '../src/calibration/desire-audit.ts';
+import { MotivationStore } from '../src/motivation/store.ts';
+
+function desireAt(place: string, statement = `去${place}找食物`) {
+  const motivation = new MotivationStore();
+  return motivation.add(
+    { statement, measure: { kind: 'visit', place }, priority: 70 },
+    { tick: 1, body: { hunger: 30, energy: 80, food: 0, health: 100 }, visits: {}, exploreCount: 0 },
+  );
+}
+
+test('心愿账本：枯竭判定会随世界恢复而翻转', () => {
+  const desire = desireAt('蜜树');
+  const facts: any[] = [];
+  // 第 5 步观察：蜜树 1 份；第 20 步：0 份；第 32 步：又 1 份
+  const obs = { '蜜树': [{ tick: 5, food: 1 }, { tick: 20, food: 0 }, { tick: 32, food: 1 }] };
+  // 此刻第 22 步：刚变 0，已等 2 步，还没看到恢复 → depleted-now
+  const early = auditDesire(desire, { tick: 22, observations: obs, facts });
+  assert.equal(early.verdict, 'depleted-now');
+  assert.equal(early.everHadFood, true);
+  assert.equal(early.ticksWaiting, 2);
+  // 同一份观察历史，此刻第 33 步：已观察到恢复 → 不再是 depleted
+  const later = auditDesire(desire, { tick: 33, observations: obs, facts });
+  assert.notEqual(later.verdict, 'depleted-now');
+  assert.equal(later.lastFood, 1);
+});
+
+test('心愿账本：受伤地点判 harmful，从未有食物的地点判 unfruitful', () => {
+  const hazardDesire = desireAt('雾泽东');
+  const hazardFacts: any[] = [{
+    id: 'f1', tick: 8, action: 'move:south',
+    situation: { hunger: 40, energy: 60, condition: 'can_move', place: '雾泽东' },
+    effect: { hungerDelta: 12, energyDelta: -8, foodDelta: 0, conditionAfter: 'can_move', outcome: '移动（雾泽东的危险在消耗身体：饥饿+12，精力-8）' },
+    source: 'observed', recordedAt: new Date().toISOString(),
+  }];
+  const harmful = auditDesire(hazardDesire, { tick: 10, observations: { '雾泽东': [{ tick: 8, food: 0 }] }, facts: hazardFacts });
+  assert.equal(harmful.verdict, 'harmful');
+  assert.match(harmful.note, /伤害/);
+
+  const grassDesire = desireAt('草地');
+  const unfruitful = auditDesire(grassDesire, { tick: 10, observations: { '草地': [{ tick: 3, food: 0 }, { tick: 7, food: 0 }] }, facts: [] });
+  assert.equal(unfruitful.verdict, 'unfruitful');
+  assert.equal(unfruitful.everHadFood, false);
+  assert.match(unfruitful.note, /从未见过该地点有食物/);
+});
+
+test('心愿账本：窗口内拿到食物判 productive，并记录代价', () => {
+  const desire = desireAt('苹果树');
+  const facts: any[] = [
+    { id: 'f1', tick: 6, action: 'explore', situation: { hunger: 40, energy: 60, condition: 'can_move', place: '苹果树' }, effect: { hungerDelta: 3, energyDelta: -5, foodDelta: 1, conditionAfter: 'can_move', outcome: '在苹果树找到一份食物，还剩 2 份' }, source: 'observed', recordedAt: new Date().toISOString() },
+    { id: 'f2', tick: 9, action: 'explore', situation: { hunger: 55, energy: 55, condition: 'can_move', place: '苹果树' }, effect: { hungerDelta: 3, energyDelta: -5, foodDelta: 1, conditionAfter: 'can_move', outcome: '在苹果树找到一份食物，还剩 1 份' }, source: 'observed', recordedAt: new Date().toISOString() },
+  ];
+  const audit = auditDesire(desire, { tick: 12, observations: { '苹果树': [{ tick: 6, food: 2 }, { tick: 9, food: 1 }] }, facts });
+  assert.equal(audit.verdict, 'productive');
+  assert.equal(audit.foodGained, 2);
+  assert.equal(audit.windowTicks, 11);
+  assert.match(audit.note, /得食物 2 份/);
+});
+
+test('心愿账本：补充节律从中位数推断，无地点心愿只报代价', () => {
+  const desire = desireAt('浆果丛');
+  // 观察序列：0→1 间隔 10，1→0 后 0→1 间隔 20 → 中位数 15
+  const obs = { '浆果丛': [{ tick: 2, food: 0 }, { tick: 12, food: 1 }, { tick: 20, food: 0 }, { tick: 40, food: 1 }] };
+  const audit = auditDesire(desire, { tick: 41, observations: obs, facts: [] });
+  assert.equal(audit.observedRefills, 2);
+  assert.equal(audit.estimatedRefillEvery, 15);
+  assert.match(audit.note, /约每 15 步一次/);
+  // 无地点心愿（囤粮）：不判结构，只报窗口
+  const motivation = new MotivationStore();
+  const stock = motivation.add({ statement: '囤够 3 份', measure: { kind: 'food', target: 3 }, priority: 80 }, { tick: 1, body: { hunger: 30, energy: 80, food: 0, health: 100 }, visits: {}, exploreCount: 0 });
+  const stockAudit = auditDesire(stock, { tick: 20, observations: {}, facts: [] });
+  assert.equal(stockAudit.placeKnown, false);
+  assert.equal(stockAudit.verdict, 'unknown');
+  assert.match(stockAudit.note, /窗口 19 步/);
+});
+
+test('校准文件版本 1 自动迁移到版本 2（空心愿账本）', () => {
+  const legacy = JSON.stringify({ version: 1, records: [] });
+  const store = CalibrationStore.fromJSON(JSON.parse(legacy));
+  assert.deepEqual(store.desireAudits(), []);
+  store.setDesireAudits([{ desireId: 'd1', verdict: 'productive', note: 'x', measure: { kind: 'visit', place: '苹果树' } } as any]);
+  assert.equal(store.auditOf('d1')?.verdict, 'productive');
+  const roundTrip = CalibrationStore.fromJSON(JSON.parse(JSON.stringify(store.toJSON())));
+  assert.equal(roundTrip.desireAudits().length, 1);
+});

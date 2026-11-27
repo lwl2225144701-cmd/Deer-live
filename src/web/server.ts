@@ -10,6 +10,7 @@ import { ModelBrain } from '../agent/brain.ts';
 import { ExperienceStore } from '../experience/store.ts';
 import { ThinkingStore } from '../thinking/store.ts';
 import { CalibrationStore } from '../calibration/store.ts';
+import { MotivationStore } from '../motivation/store.ts';
 import { WorldController } from './controller.ts';
 
 const webRoot = fileURLToPath(new URL('../../web/', import.meta.url));
@@ -59,7 +60,8 @@ async function main() {
   const experience = settings.memory.experience.enabled ? ExperienceStore.load(resolve(settings.memory.experience.path)) : undefined;
   const thinking = settings.thinking.enabled && experience ? ThinkingStore.load(resolve(settings.thinking.path)) : undefined;
   const calibration = thinking && settings.calibration.enabled ? CalibrationStore.load(resolve(settings.calibration.path)) : undefined;
-  const controller = new WorldController(store, settings, new ModelBrain({ modelConfig: settings.model, life: settings.life, character: settings.character }), experience, thinking, calibration);
+  const motivation = settings.motivation.enabled && experience ? MotivationStore.load(resolve(settings.motivation.path)) : undefined;
+  const controller = new WorldController(store, settings, new ModelBrain({ modelConfig: settings.model, life: settings.life, character: settings.character }), experience, thinking, calibration, motivation);
   const server = createWebServer(controller);
   const stop = async () => { await controller.close(); server.close(() => { store.close(); process.exit(0); }); server.closeIdleConnections(); };
   process.once('SIGINT', stop); process.once('SIGTERM', stop);

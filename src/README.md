@@ -13,7 +13,8 @@
 | `life/` | `body.ts` / `world.ts` / `observe.ts` | 身体、可替换世界与观察的旁路最小实现，尚未接入正式运行 |
 | `experience/` | `types.ts` / `store.ts` / `facts.ts` | 独立经验事实的记录、聚合、检索与 JSON 持久化；`facts.ts` 负责世界事件 ↔ 经验事实的双向转换，不调用模型 |
 | `thinking/` | `types.ts` / `store.ts` / `generate.ts` | 思考系统：模型基于事实写下的自我判断——生成、复核（keep/drop）、持久化与自我信念注入；事实归经验，判断归思考 |
-| `calibration/` | `types.ts` / `store.ts` | 校准系统：自我判断（claim）与写下之后的实际遭遇做机械对账，零模型调用；violated 记录进入思考复核提示词 |
+| `calibration/` | `types.ts` / `store.ts` / `desire-audit.ts` | 校准系统：信念对账（claim vs 事实）+ 心愿账本（结构/此刻/节律三层动态判定），零模型调用；结果进入思考与动机的复核提示词 |
+| `motivation/` | `types.ts` / `store.ts` / `generate.ts` | 动机系统：模型基于经历定下的心愿（必须带可核对度量），进度由现实数据机械计算，达成留档；存在心愿时决策提示改用自主权衡框架，身体信号降级为输入 |
 | `storage/` | `store.ts` | SQLite 存取、事务、历史检索和上下文组装 |
 | `web/` | `server.ts` / `controller.ts` | 本机2D服务、状态接口、运行控制和取消 |
 | `config/` | `settings.ts` | 配置类型、默认值、JSON 加载、校验和环境变量覆盖 |

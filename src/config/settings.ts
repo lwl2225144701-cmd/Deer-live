@@ -31,12 +31,16 @@ export type ThinkingSettings = {
 export type CalibrationSettings = {
   enabled: boolean; path: string;
 };
+export type MotivationSettings = {
+  enabled: boolean; path: string; everyTicks: number; maxActive: number; maxInPrompt: number;
+};
 export type RuntimeSettings = {
   worldFile: string; characterFile: string;
   life: Omit<LifeSettings, 'foodRegrowEveryTicks'>;
   memory: { maxRecall: number; maxExperiences: number; experience: ExperienceSettings };
   thinking: ThinkingSettings;
   calibration: CalibrationSettings;
+  motivation: MotivationSettings;
   model: ModelSettings;
   run: { liveSteps: number; intervalMs: number; strict: boolean }; storage: { path: string };
 };
@@ -67,6 +71,7 @@ export const DEFAULT_RUNTIME: RuntimeSettings = {
   },
   thinking: { enabled: true, path: 'data/thinking.json', everyTicks: 10, maxActive: 20, maxBeliefsInPrompt: 5 },
   calibration: { enabled: true, path: 'data/calibration.json' },
+  motivation: { enabled: true, path: 'data/motivation.json', everyTicks: 15, maxActive: 3, maxInPrompt: 3 },
   model: {
     provider: 'ollama', name: 'deepseek-r1:1.5b', timeoutMs: 30000, numPredict: 1024, numCtx: 4096,
     temperature: 0.6, topP: 0.95, seed: 42, baseUrl: '', apiKey: '', reasoningEffort: '',
@@ -77,7 +82,7 @@ function assemble(runtime: RuntimeSettings, world: WorldSettings, character: Cha
   return structuredClone({
     world, character, initialWorld: { width: world.width, height: world.height, places: world.places, agent: { name: character.name, ...character.initial } },
     life: { ...runtime.life, foodRegrowEveryTicks: world.foodRegrowEveryTicks },
-    memory: runtime.memory, thinking: runtime.thinking, calibration: runtime.calibration, model: runtime.model, run: runtime.run, storage: runtime.storage,
+    memory: runtime.memory, thinking: runtime.thinking, calibration: runtime.calibration, motivation: runtime.motivation, model: runtime.model, run: runtime.run, storage: runtime.storage,
   });
 }
 export const DEFAULT_SETTINGS = assemble(DEFAULT_RUNTIME, DEFAULT_WORLD, DEFAULT_CHARACTER);
@@ -149,6 +154,11 @@ export function validateSettings(s: Settings): void {
   number(s.thinking.maxBeliefsInPrompt, 'thinking.maxBeliefsInPrompt', 0, 20);
   if (typeof s.calibration.enabled !== 'boolean') throw new Error('calibration.enabled 必须为 true 或 false');
   text(s.calibration.path, 'calibration.path', 500);
+  if (typeof s.motivation.enabled !== 'boolean') throw new Error('motivation.enabled 必须为 true 或 false');
+  text(s.motivation.path, 'motivation.path', 500);
+  number(s.motivation.everyTicks, 'motivation.everyTicks', 1, 1000);
+  number(s.motivation.maxActive, 'motivation.maxActive', 1, 10);
+  number(s.motivation.maxInPrompt, 'motivation.maxInPrompt', 0, 10);
   text(s.model.name, 'model.name');
   if (s.model.name.trim() !== s.model.name) throw new Error('model.name 不能包含首尾空格');
   if (!['ollama', 'openai-compatible'].includes(s.model.provider)) throw new Error('model.provider 必须是 ollama 或 openai-compatible');
@@ -200,6 +210,11 @@ export function loadSettings(env: NodeJS.ProcessEnv = process.env, cwd = process
     settings.calibration.enabled = env.DEER_LIVE_CALIBRATION === '1';
   }
   if (env.DEER_LIVE_CALIBRATION_PATH !== undefined) settings.calibration.path = env.DEER_LIVE_CALIBRATION_PATH;
+  if (env.DEER_LIVE_MOTIVATION !== undefined) {
+    if (!['0', '1'].includes(env.DEER_LIVE_MOTIVATION)) throw new Error('DEER_LIVE_MOTIVATION 必须为 0 或 1');
+    settings.motivation.enabled = env.DEER_LIVE_MOTIVATION === '1';
+  }
+  if (env.DEER_LIVE_MOTIVATION_PATH !== undefined) settings.motivation.path = env.DEER_LIVE_MOTIVATION_PATH;
   if (env.DEER_LIVE_TIMEOUT_MS !== undefined) {
     if (!/^\d+$/.test(env.DEER_LIVE_TIMEOUT_MS)) throw new Error('DEER_LIVE_TIMEOUT_MS 必须为正整数');
     settings.model.timeoutMs = Number(env.DEER_LIVE_TIMEOUT_MS);

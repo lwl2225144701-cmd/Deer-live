@@ -3,6 +3,7 @@ import { dirname } from 'node:path';
 import type { ExperienceFact } from '../experience/types.ts';
 import type { ThinkingBelief } from '../thinking/types.ts';
 import type { BeliefClaim, CalibrationRecord, CalibrationStatus } from './types.ts';
+import type { DesireAudit } from './desire-audit.ts';
 
 const AVOID_KEYWORDS = ['回避', '避开', '避免', '不要', '不宜', '远离', '绕开', '非必要不', '别在', '别去'];
 const PREFER_KEYWORDS = ['优先', '值得', '应去', '前往', '先去', '稳定获得', '可稳定', '产出', '换到食物'];
@@ -18,7 +19,7 @@ function deriveClaim(statement: string, placeNames: string[]): BeliefClaim | und
   return { kind: avoid ? 'avoid' : 'prefer', place: matched[0] };
 }
 
-const VERSION = 1;
+const VERSION = 2;
 
 const isObject = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 
@@ -52,8 +53,17 @@ function isBadEvent(fact: ExperienceFact, outcome: string): boolean {
 // 校准系统：把自我判断与其写下之后的实际遭遇对账。
 // avoid：该地点出现危害损失或空手探索 = 言行不一；
 // prefer：该地点拿到食物 = 得到确认，空手探索 = 未能确认。
+function auditOf(value: unknown): DesireAudit {
+  if (!isObject(value)) throw new Error('心愿账本条目必须是对象');
+  if (typeof value.desireId !== 'string' || !value.desireId.trim()) throw new Error('心愿账本缺少 desireId');
+  const verdicts = ['productive', 'harmful', 'unfruitful', 'depleted-now', 'unknown'];
+  if (!verdicts.includes(value.verdict as string)) throw new Error('心愿账本 verdict 非法');
+  return structuredClone(value) as unknown as DesireAudit;
+}
+
 export class CalibrationStore {
   private recordList: CalibrationRecord[] = [];
+  private auditList: DesireAudit[] = [];
 
   update(thinking: { beliefs(status: 'active'): ThinkingBelief[] }, experience: { facts(): ExperienceFact[] }, tick: number, options: { placeNames?: string[] } = {}): CalibrationRecord[] {
     if (!Number.isSafeInteger(tick) || tick < 0) throw new Error('校准 tick 必须是非负整数');
@@ -102,12 +112,28 @@ export class CalibrationStore {
     return this.recordList.map(r => ({ beliefId: r.beliefId, status: r.status, claim: r.claim, claimSource: r.claimSource, visitsSince: r.visitsSince, hazardDamageEventsSince: r.hazardDamageEventsSince, emptyExploresSince: r.emptyExploresSince, foodGainsSince: r.foodGainsSince }));
   }
 
+  // 心愿账本：每步按当前世界状态重算，覆盖旧记录（判定会随世界变化翻转）
+  setDesireAudits(audits: DesireAudit[]): void {
+    if (!Array.isArray(audits)) throw new Error('心愿账本必须是数组');
+    this.auditList = structuredClone(audits);
+  }
+
+  desireAudits(): DesireAudit[] {
+    return structuredClone(this.auditList);
+  }
+
+  auditOf(desireId: string): DesireAudit | undefined {
+    const found = this.auditList.find(a => a.desireId === desireId);
+    return found ? structuredClone(found) : undefined;
+  }
+
   clear(): void {
     this.recordList = [];
+    this.auditList = [];
   }
 
   toJSON() {
-    return { version: VERSION, records: structuredClone(this.recordList) };
+    return { version: VERSION, records: structuredClone(this.recordList), desireAudits: structuredClone(this.auditList) };
   }
 
   save(path: string): void {
@@ -129,10 +155,15 @@ export class CalibrationStore {
 
   static fromJSON(raw: unknown): CalibrationStore {
     if (!isObject(raw)) throw new Error('校准文件必须是对象');
-    if (raw.version !== VERSION) throw new Error(`校准文件版本必须是 ${VERSION}`);
+    // 版本 1 = 只有信念对账；版本 2 增加心愿账本。旧文件按空账本迁移。
+    if (raw.version !== 1 && raw.version !== VERSION) throw new Error(`校准文件版本必须是 1 或 ${VERSION}`);
     if (!Array.isArray(raw.records)) throw new Error('校准文件必须包含 records 数组');
     const store = new CalibrationStore();
     store.recordList = raw.records.map(recordOf);
+    if (raw.version === VERSION) {
+      if (raw.desireAudits !== undefined && !Array.isArray(raw.desireAudits)) throw new Error('校准文件的 desireAudits 必须是数组');
+      store.auditList = (raw.desireAudits as DesireAudit[] | undefined)?.map(auditOf) ?? [];
+    }
     return store;
   }
 }

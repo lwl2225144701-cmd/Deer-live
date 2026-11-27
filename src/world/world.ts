@@ -20,7 +20,7 @@ export function foodAvailable(place: Place, tick: number): boolean {
 }
 // dead：体力耗尽后的世界终态；health：0–100，饥饿顶格时持续流失，进食恢复。
 export type World = { version: 2; tick: number; width: number; height: number; agent: Agent; places: Place[]; visits: Record<string, number>; dead?: boolean };
-export type Cognition = { source: 'rule' | 'ollama' | 'fallback'; model?: string; latencyMs?: number; offeredMemoryIds?: string[]; offeredExperienceTicks?: number[]; offeredExperienceHints?: string[]; offeredSelfBeliefs?: number; error?: string };
+export type Cognition = { source: 'rule' | 'ollama' | 'fallback'; model?: string; latencyMs?: number; offeredMemoryIds?: string[]; offeredExperienceTicks?: number[]; offeredExperienceHints?: string[]; offeredSelfBeliefs?: number; offeredDesires?: number; error?: string };
 export type Event = { tick: number; action: Action; reason: string; outcome: string; observation?: { x: number; y: number; place: string; foodRemaining: number }; experience?: { before: Agent; after: Agent }; cognition?: Cognition; learning?: LearningRecord };
 export type Choice = { id: string; label: string; action: Action };
 const clamp = (n: number) => Math.max(0, Math.min(100, n));

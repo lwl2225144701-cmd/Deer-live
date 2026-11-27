@@ -20,7 +20,7 @@
   },
   "model": {
     "provider": "openai-compatible",
-    "name": "step-5-preview",
+    "name": "step-3.7-flash",
     "baseUrl": "https://api.stepfun.com/step_plan/v1",
     "apiKey": "在此填入你的模型服务密钥",
     "timeoutMs": 120000,
